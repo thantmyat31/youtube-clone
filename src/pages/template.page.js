@@ -1,8 +1,8 @@
 import React from 'react';
 
-import LeftOuterComponent from '../left_component/left_outer_component';
-import RightOuterComponent from '../right_component/right_outer_component';
-import ProfileImageComponent from '../left_component/profile_image_component';
+import LeftOuterComponent from '../components/templates/normalTemplate/left_component/left_outer_component';
+import RightOuterComponent from '../components/templates/normalTemplate/right_component/right_outer_component';
+import ProfileImageComponent from '../components/templates/normalTemplate/left_component/profile_image_component';
 
 const TemplatePage = () => {
 	return (
