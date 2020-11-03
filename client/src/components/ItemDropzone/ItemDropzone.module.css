@@ -1,0 +1,26 @@
+.dropzoneContainer {
+    width:40vw;
+    height:35vw;
+    max-width:300px;
+    max-height:250px;
+    border: 1px solid #d6d6d6;
+}
+
+.dropzoneContainer div {
+    height:100%;
+    width:100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dropzoneContainer .icon {
+    font-weight: normal;
+    font-size: 100px;
+    color:#a6a6a6;
+}
+
+.dropzoneContainer:focus,
+.dropzoneContainer div:focus {
+    outline: none;
+}
