@@ -54,7 +54,6 @@ router.post("/thumbnail", (req, res) => {
     
     Ffmpeg(req.body.filePath)
         .on('filenames', function(filenames) {
-            console.log('Will generate ' + filenames.join(', '));
             thumbnailFilePath = `thumbnails/${filenames[0]}`
 
         })
@@ -70,7 +69,7 @@ router.post("/thumbnail", (req, res) => {
             // Will take screens at 20%, 40%, 60% and 80% of the video
             count: 3,
             folder: 'uploads/thumbnails',
-            size:'300x250',
+            size:'320x180',
             filename: 'thumbnail-%b.png'
         });
 });
@@ -87,5 +86,22 @@ router.post('/uploadVideo', (req, res) => {
         });
     })
 });
+
+router.get('/getVideos', (req, res) => {
+    Video.find()
+        .populate('writer')
+        .exec((error, videos) => {
+            if (error) return res.status(500).json({
+                success: false,
+                error
+            });
+            return res.status(200).json({
+                success: true,
+                videos
+            });
+        
+        
+    })
+})
 
 module.exports = router;

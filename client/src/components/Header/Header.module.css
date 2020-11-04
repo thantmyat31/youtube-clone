@@ -1,29 +1,41 @@
 .header {
-    padding:10px 40px;
-    background-color: #ff6600;
+    padding:15px 40px;
+    background-color: #fff;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    box-shadow: 0 1px 7px 0 #ddd;
 }
 
 .logo {
-    color:#fff;
-    font-size: 30px;
+    color:#444;
+    font-weight:bold;
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    font-size:1.2rem;
+}
+
+.logo .icon {
+    width:1.8rem;
+    height:1.8rem;
+    fill:#ff6600;
+    margin-right:7px;
 }
 
 .navLinks {
-    
+    display:flex;
+    flex-direction:row;
 }
 
 .navLinks .link {
-    display: inline-block;
-    color:#fff;
-    margin-left:10px;
-}
-
-.navLinks h3 {
-    color:#fff;
+    text-transform:uppercase;
+    color:#777;
+    margin-left:15px;
+    cursor: pointer;
+    font-size:0.9rem;
+    font-weight:600;
 }
 
 @media screen and (max-width:770px) {

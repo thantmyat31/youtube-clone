@@ -10,6 +10,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height:100vh;
+  background:#f9f9f9;
 }
 
 code {
@@ -17,17 +19,51 @@ code {
     monospace;
 }
 
+ul,ol,li {
+  list-style:none;
+}
+
 a {
   text-decoration: none;
 }
 
+.app {
+  
+}
+
 .page {
-  max-width: 870px;
+  max-width:1200px;
   padding:0 15px;
   margin:40px auto;
 }
 
+.page.form-page {
+  max-width: 870px; 
+}
+
+.container {
+
+}
+
 .row {
   display:flex;
-  margin:15px 0;
+  flex-direction: row;
+  flex-wrap:wrap;
+  margin:15px -10px;
+}
+
+.col-c4 {
+  width:25%;
+}
+
+@media screen and (max-width:770px) {
+  .col-c4 {
+    width:50%;
+  }
+}
+
+@media screen and (max-width:460px) {
+  .col-c4 {
+    width:100%;
+  }
 }

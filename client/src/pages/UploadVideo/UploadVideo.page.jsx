@@ -46,6 +46,7 @@ const UploadVideoPage = () => {
 		}
 
 		if(
+			!currentUser || 
 			title === '' ||
 			description === '' ||
 			privacy === '' ||
@@ -56,7 +57,7 @@ const UploadVideoPage = () => {
 		) return alert("Please fill all the required fields");
 
 		const variables = {
-			writer: currentUser._id,
+			writer: currentUser.id,
 			title,
 			description,
 			privacy,
@@ -118,7 +119,7 @@ const UploadVideoPage = () => {
 	};
 
 	return (
-		<div className="page">
+		<div className="page form-page">
 			<div className={styles.container}>
 				<form onSubmit={handleOnSubmit}>
 					<div className={styles.uploadContainer}>
@@ -151,7 +152,7 @@ const UploadVideoPage = () => {
 
 					<Selector selectItems={Category} onChange={(e) => setCategory(e.target.value)} />
 
-					<div className="row">
+					<div className={styles.buttonContainer}>
 						<Button title="Create" type="submit" />
 					</div>
 				</form>

@@ -4,9 +4,8 @@ import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userLogout } from '../../redux/user/user.action';
 
-import Button from '../Button/Button';
-
 import styles from './Header.module.css';
+import { FaYoutube } from 'react-icons/fa';
 
 const Header = ({ currentUser, userLogout }) => {
 	const history = useHistory();
@@ -19,9 +18,8 @@ const Header = ({ currentUser, userLogout }) => {
 	return (
 		<header className={styles.header}>
 			<Link className={styles.logo} to="/">
-				MERN auth
+				<FaYoutube className={styles.icon} /> MY Tube
 			</Link>
-			<Link className={styles.link} to="/video/upload">Upload</Link>
 			{!currentUser ? (
 				<div className={styles.navLinks}>
 					<Link className={styles.link} to="/login">
@@ -33,7 +31,8 @@ const Header = ({ currentUser, userLogout }) => {
 				</div>
 			) : (
 				<div className={styles.navLinks}>
-                    <Button title="Logout" onClick={logout} />
+					<Link className={styles.link} to="/video/upload">Upload</Link>
+					<p className={styles.link} onClick={logout}>Logout</p>
 				</div>
 			)}
 		</header>

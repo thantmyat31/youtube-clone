@@ -13,6 +13,7 @@ import UploadVideoPage from './pages/UploadVideo/UploadVideo.page';
 import Header from './components/Header/Header';
 import AuthRoute from './components/AuthRoute/AuthRoute';
 import axios from 'axios';
+import VideoDetailsPage from './pages/VideoDetails/VideoDetails.page';
 
 const App = ({ saveUserInState }) => {
 	useEffect(() => {
@@ -47,6 +48,7 @@ const App = ({ saveUserInState }) => {
 		<div className="app">
 			<Header />
 			<Switch>
+				<Route path="/video/:videoId" component={VideoDetailsPage} />
 				<AuthRoute 
 					exact
 					path="/video/upload"
