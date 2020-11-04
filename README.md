@@ -1,14 +1,27 @@
-# MERN-stack-boiler-plate
+## Installation
 
-- [x] create package.json
-- [x] install dependencies
-- [x] add listener & first route
-- [x] create database cluster
-- [x] make connection to database
-- [x] add listener
-- [x] use middlewares
-- [x] make some routes
-- [x] add authentication with jwt
-- [x] added client by create-react-app
-- [x] create login and register form
-- [x] make some api request and save the response user data to redux store
+```bash
+npm install
+```
+
+## Configuration
+
+Update your MongoDB connection url, jwt secret key and so on.
+
+## Running frontend and backend separately
+
+Open two terminals and run following command separately
+
+```bash
+npm run client
+```
+
+```bash
+npm run server
+```
+
+## Running frontend and backend together in one command
+
+```bash
+npm run dev
+```
