@@ -33,7 +33,7 @@ const Card = ({ item }) => {
                     <span className={styles.details}>
                         <h4>{item.title}</h4>
                         <p>{item.writer.displayName}</p>
-                        <span>{item.views} {item.views > 0 ? "views" : "view"} - {moment(item.createdAt).format('MMM Do YYYY')}</span>
+                        <span>{item.views} {item.views > 0 ? "views" : "view"} <b>·</b> {moment(item.createdAt).format('MMM Do, YYYY')}</span>
                     </span>
                 </div>
             </div>

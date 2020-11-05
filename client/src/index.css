@@ -27,10 +27,6 @@ a {
   text-decoration: none;
 }
 
-.app {
-  
-}
-
 .page {
   max-width:1200px;
   padding:0 15px;
@@ -41,8 +37,10 @@ a {
   max-width: 870px; 
 }
 
-.container {
-
+.grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap:wrap;
 }
 
 .row {
@@ -56,14 +54,23 @@ a {
   width:25%;
 }
 
+.col-c3 {
+  width:33.3333%
+}
+
 @media screen and (max-width:770px) {
-  .col-c4 {
+  .col-c4,
+  .col-c3 {
     width:50%;
+  }
+  .col-c3.card-row-container {
+    width:100%;
   }
 }
 
 @media screen and (max-width:460px) {
-  .col-c4 {
+  .col-c4,
+  .col-c3 {
     width:100%;
   }
 }

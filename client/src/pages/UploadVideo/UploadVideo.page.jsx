@@ -98,7 +98,10 @@ const UploadVideoPage = () => {
 					fileName: response.data.fileName,
 					filePath: response.data.filePath
 				};
-				setFilePath(response.data.filePath);
+
+				const newFilePath = response.data.filePath.split('\\').pop() || 
+									response.data.fileName;
+				setFilePath(newFilePath);
 
 				// Generate thumbnails
 				await axios

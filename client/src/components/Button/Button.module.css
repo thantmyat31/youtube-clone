@@ -6,6 +6,7 @@
     text-transform: uppercase;
     transition-duration: 0.4s;
     transition-timing-function: ease-in-out;
+    cursor: pointer;
 }
 
 .button:hover {

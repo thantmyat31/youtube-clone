@@ -1,9 +1,11 @@
 import { userActionTypes } from './user.type';
+import { subscribeActionTypes } from '../subscribe/subscribe.type';
 
 const INITIAL_STATE = {
     token: undefined,
     currentUser: undefined,
-    error: null,
+    channelsId: [],
+    errors: [],
     loading: false
 }
 
@@ -21,6 +23,27 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 currentUser: undefined,
                 token: undefined
+            }
+
+        case subscribeActionTypes.SUBSCRIBE_START:
+            return {
+                ...state,
+                loading: true,
+            }
+
+        case subscribeActionTypes.SUBSCRIBE_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                errors: [],
+                channelsId: []
+            }
+
+        case subscribeActionTypes.SUBSCRIBE_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                errors: [...state.errors, action.payload]
             }
 
         default:

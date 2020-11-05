@@ -1,7 +1,5 @@
 const router = require("express").Router();
 const multer = require("multer");
-const User = require("./../model/user");
-const auth = require("./../middlewares/auth");
 const Ffmpeg = require("fluent-ffmpeg");
 const Video = require("../model/video");
 
@@ -31,6 +29,7 @@ router.post("/uploadFiles", (req, res) => {
                 error
             })
         }
+
         return res.json({
             success: true,
             filePath: res.req.file.path,
@@ -91,7 +90,7 @@ router.get('/getVideos', (req, res) => {
     Video.find()
         .populate('writer')
         .exec((error, videos) => {
-            if (error) return res.status(500).json({
+            if (error) return res.status(400).json({
                 success: false,
                 error
             });
@@ -99,9 +98,22 @@ router.get('/getVideos', (req, res) => {
                 success: true,
                 videos
             });
-        
-        
     })
+});
+
+router.post('/getVideo', (req, res) => {
+    Video.findById(req.body.videoId)
+        .populate('writer')
+        .exec((error, video) => {
+            if(error) res.status(400).json({
+                success: false,
+                error
+            });
+            return res.status(200).json({
+                success: true,
+                video
+            });
+        })
 })
 
 module.exports = router;

@@ -41,14 +41,26 @@
 .card .info .details h4 {
     font-weight:500;
     margin-bottom:5px;
+    display:-webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
 }
 
 .card .info .details p,
 .card .info .details span {
-    color: #333;
+    color: #555;
+    font-weight:600;
     font-size:14px;
 }
 
 .card .info .details p {
-    margin-bottom:-5px;
+    display:-webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
 }

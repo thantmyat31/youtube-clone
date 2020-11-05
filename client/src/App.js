@@ -45,15 +45,15 @@ const App = ({ saveUserInState }) => {
 	}, [saveUserInState]);
 
 	return (
-		<div className="app">
+		<>
 			<Header />
 			<Switch>
-				<Route path="/video/:videoId" component={VideoDetailsPage} />
 				<AuthRoute 
 					exact
 					path="/video/upload"
 					component={UploadVideoPage}
 				/>
+				<Route path="/video/:videoId" component={VideoDetailsPage} />
 				<Route path="/login" component={LoginPage} />
 				<Route path="/register" component={RegisterPage} />
 				<AuthRoute 
@@ -63,7 +63,7 @@ const App = ({ saveUserInState }) => {
 				/>
 				<Route path="*" component={NotFoundPage} />
 			</Switch>
-		</div>
+		</>
 	);
 };
 

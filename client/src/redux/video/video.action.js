@@ -2,31 +2,66 @@ import { videoActionTypes } from './video.type';
 
 import axios from 'axios';
 
-export const fetchVideoStart = () => ({
-    type: videoActionTypes.FETCH_VIDEO_START
+const apiCall = axios.create({
+    baseURL: "http://localhost:2020/video"
 });
 
-export const fetchVideoSuccess = (videos) => ({
-    type: videoActionTypes.FETCH_VIDEO_SUCCESS,
+export const fetchVideosStart = () => ({
+    type: videoActionTypes.FETCH_VIDEOS_START
+});
+
+export const fetchVideosSuccess = (videos) => ({
+    type: videoActionTypes.FETCH_VIDEOS_SUCCESS,
     payload: videos
 });
 
-export const fetchVideoFailure = (error) => ({
-    type: videoActionTypes.FETCH_VIDEO_FAILURE,
+export const fetchVideosFailure = (error) => ({
+    type: videoActionTypes.FETCH_VIDEOS_FAILURE,
     payload: error
 });
 
+export const getVideoByIdStart = () => ({
+    type: videoActionTypes.GET_VIDEO_BY_ID_SUCCCESS
+});
+
+export const getVideoByIdSuccess = (video) => ({
+    type: videoActionTypes.GET_VIDEO_BY_ID_SUCCCESS,
+    payload: video
+});
+
+export const getVideoByIdFailure = (error) => ({
+    type: videoActionTypes.GET_VIDEO_BY_ID_FAILURE,
+    payload: error
+})
+
+
+// Get all videos from mongodb
 export const getVideosAction = () => {
     return async (dispatch) => {
-        dispatch(fetchVideoStart());
+        dispatch(fetchVideosStart());
         try {
-            const response = await axios.get('http://localhost:2020/video/getVideos');
+            const response = await apiCall.get('/getVideos');
             const result = await response.data;
             if(result) {
-                dispatch(fetchVideoSuccess(result.videos));
+                dispatch(fetchVideosSuccess(result.videos));
             }
         } catch(error) {
-            dispatch(fetchVideoFailure(error));
+            dispatch(fetchVideosFailure(error));
+        }
+    }
+}
+
+export const getVideoByIdAction = (videoId) => {
+    return async (dispatch) => {
+        dispatch(getVideoByIdStart());
+        try {
+            const response = await apiCall.post('/getVideo', {videoId});
+            const result = await response.data;
+            if(result) {
+                dispatch(getVideoByIdSuccess(result.video));
+            }
+        } catch (error) {
+            dispatch(getVideoByIdFailure(error));
         }
     }
 }
