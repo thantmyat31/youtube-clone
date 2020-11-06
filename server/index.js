@@ -16,7 +16,7 @@ mongoose
 		useUnifiedTopology: true
 	})
 	.then(() => console.log('[MongoDB Connected]'))
-	.catch((error) => console.error("[Database Connection Established]"));
+	.catch((error) => console.error("[Database Connection Badly Failed]"));
 
 
 // Middlewares

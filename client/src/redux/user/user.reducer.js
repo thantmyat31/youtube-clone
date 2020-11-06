@@ -26,9 +26,18 @@ const userReducer = (state = INITIAL_STATE, action) => {
             }
 
         case subscribeActionTypes.SUBSCRIBE_START:
+        case subscribeActionTypes.UNSUBSCRIBE_START:
             return {
                 ...state,
                 loading: true,
+            }
+
+        case subscribeActionTypes.SUBSCRIBE_FAILURE:
+        case subscribeActionTypes.UNSUBSCRIBE_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                errors: [...state.errors, action.payload]
             }
 
         case subscribeActionTypes.SUBSCRIBE_SUCCESS:
@@ -36,14 +45,15 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 loading: false,
                 errors: [],
-                channelsId: []
+                channelsId: [...state.channelsId, action.payload]
             }
 
-        case subscribeActionTypes.SUBSCRIBE_FAILURE:
+        case subscribeActionTypes.UNSUBSCRIBE_SUCCESS:
             return {
                 ...state,
                 loading: false,
-                errors: [...state.errors, action.payload]
+                errors: [],
+                channelsId: state.channelsId.filter(cid => cid !== action.payload)
             }
 
         default:

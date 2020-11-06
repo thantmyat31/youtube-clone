@@ -54,6 +54,9 @@
     color: #555;
     font-weight:600;
     font-size:14px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .card .info .details p {
@@ -63,4 +66,8 @@
     overflow:hidden;
     text-overflow: ellipsis;
     word-break: break-all;
+}
+
+.card .info .details span b {
+    padding: 0 5px;
 }

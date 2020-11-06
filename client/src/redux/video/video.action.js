@@ -6,6 +6,7 @@ const apiCall = axios.create({
     baseURL: "http://localhost:2020/video"
 });
 
+// Get all videos
 export const fetchVideosStart = () => ({
     type: videoActionTypes.FETCH_VIDEOS_START
 });
@@ -20,6 +21,7 @@ export const fetchVideosFailure = (error) => ({
     payload: error
 });
 
+// Get video by video id
 export const getVideoByIdStart = () => ({
     type: videoActionTypes.GET_VIDEO_BY_ID_SUCCCESS
 });
@@ -40,7 +42,7 @@ export const getVideosAction = () => {
     return async (dispatch) => {
         dispatch(fetchVideosStart());
         try {
-            const response = await apiCall.get('/getVideos');
+            let response = await apiCall.get('/getVideos');
             const result = await response.data;
             if(result) {
                 dispatch(fetchVideosSuccess(result.videos));
@@ -51,6 +53,23 @@ export const getVideosAction = () => {
     }
 }
 
+// Get subscribed videos
+export const getSubscribedVideosAction = (userFrom) => {
+    return async (dispatch) => {
+        dispatch(fetchVideosStart());
+        try {
+            let response = await apiCall.post('/getSubscriptionVideos', { userFrom: userFrom });
+            const result = await response.data;
+            if(result) {
+                dispatch(fetchVideosSuccess(result.videos));
+            }
+        } catch(error) {
+            dispatch(fetchVideosFailure(error));
+        }
+    }
+}
+
+// Get video by video id
 export const getVideoByIdAction = (videoId) => {
     return async (dispatch) => {
         dispatch(getVideoByIdStart());

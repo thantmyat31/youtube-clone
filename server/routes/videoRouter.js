@@ -2,6 +2,7 @@ const router = require("express").Router();
 const multer = require("multer");
 const Ffmpeg = require("fluent-ffmpeg");
 const Video = require("../model/video");
+const Subscribe = require("../model/subscribe");
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -44,9 +45,6 @@ router.post("/thumbnail", (req, res) => {
 
     Ffmpeg.ffprobe(req.body.filePath, (error, metaData) => {
         if(!error) {
-            console.log(metaData);
-            console.log(metaData.format.duration);
-
             fileDuration = metaData.format.duration;
         }
     });
@@ -54,10 +52,8 @@ router.post("/thumbnail", (req, res) => {
     Ffmpeg(req.body.filePath)
         .on('filenames', function(filenames) {
             thumbnailFilePath = `thumbnails/${filenames[0]}`
-
         })
         .on('end', function() {
-            console.log('Screenshots taken');
             return res.json({
                 success: true,
                 fileDuration,
@@ -114,6 +110,29 @@ router.post('/getVideo', (req, res) => {
                 video
             });
         })
-})
+});
+
+router.post('/getSubscriptionVideos', (req, res) => {
+    Subscribe.find({ "userFrom": req.body.userFrom})
+        .exec((error, channels) => {
+            if(error) res.status(400).json({
+                success: false,
+                error
+            });
+            const subscribedChannel = channels.map(ch => ch.userTo);
+            Video.find({ "writer": { $in: subscribedChannel } })
+                .populate('writer')
+                .exec((error, videos) => {
+                    if(error) return res.status(400).json({
+                        success: true,
+                        error
+                    });
+                    return res.status(200).json({
+                        success: true,
+                        videos
+                    })
+                });
+        });
+});
 
 module.exports = router;

@@ -3,19 +3,10 @@ import Loading from '../Loading/Loading';
 import styles from './VideoAndInfos.module.css';
 import moment from 'moment';
 import Button from '../Button/Button';
-import { useDispatch, useSelector } from 'react-redux';
-import { subscriptionAction } from '../../redux/subscribe/subscribe.action';
 
-const VideoAndInfos = ({ video, subscribeNumber, subscribed }) => {
-    const { currentUser } = useSelector(state => state.user);
-    const dispatch = useDispatch();
-    
+const VideoAndInfos = ({ video, subscribeNumber, subscribed, onClick }) => {
     if(!video) return <Loading />;
-
-    const handleOnSubscription = () => {
-        dispatch(subscriptionAction(video.writer._id, currentUser.id));
-    }
-
+    
     return ( 
         <div className={styles.container}>
             <video src={`http://localhost:2020/${video.filePath}`} autoPlay muted controls></video>
@@ -34,7 +25,14 @@ const VideoAndInfos = ({ video, subscribeNumber, subscribed }) => {
                         </span>
                     </div>
                     <div>
-                        <Button title="Subscribe" style={subscribed ? { background:"#ececec", borderColor:'#ececec',color:'#555'  }: null} onClick={handleOnSubscription} />
+                        <Button 
+                            type="button" 
+                            title={subscribed ? "Subscribed" : "Subscribe"} 
+                            style={subscribed ? 
+                                    {background:"#ececec", borderColor:'#ececec',color:'#555'}: 
+                                    null
+                                } 
+                            onClick={onClick} />
                     </div>
                 </div>
             </div>

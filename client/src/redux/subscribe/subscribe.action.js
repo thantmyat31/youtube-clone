@@ -20,6 +20,21 @@ export const subscriptionFailure = (error) => ({
     payload: error
 });
 
+// Unsubscribe
+export const unsubscribeStart = () => ({
+    type: subscribeActionTypes.UNSUBSCRIBE_START
+});
+
+export const unsubscribeSuccess = (channelId) => ({
+    type: subscribeActionTypes.UNSUBSCRIBE_SUCCESS,
+    payload: channelId
+});
+
+export const unsubscribeFailure = (error) => ({
+    type: subscribeActionTypes.UNSUBSCRIBE_FAILURE,
+    payload: error
+});
+
 // Get subscribe number
 export const getSubscribeNumberStart = () => ({
     type: subscribeActionTypes.GET_SUBSCRIBE_NUMBER_START
@@ -57,20 +72,41 @@ export const subscriptionAction = (userTo, userFrom) => {
         try {
             const response = await apiCall.post('/subscription', {userTo: userTo, userFrom: userFrom});
             const result = await response.data;
-            dispatch(subscriptionSuccess(result.channelId));
+            if(await result.success) {
+                dispatch(subscriptionSuccess(result.channelId));
+                dispatch(getsubscribeNumberAction(userTo));
+                dispatch(checkUserSubscribeAction(userTo, userFrom));
+            }
         } catch (error) {
             dispatch(subscriptionFailure(error));
         }
     }
 }
 
+// Unscribe
+export const unsubscribeAction = (userTo, userFrom) => {
+    return async (dispatch) => {
+        dispatch(unsubscribeStart());
+        try {
+            const response = await apiCall.post('/unsubscribe', { userTo: userTo, userFrom: userFrom });
+            const result = await response.data;
+            if(result.success) {
+                dispatch(unsubscribeSuccess(result.channelId));
+                dispatch(getsubscribeNumberAction(userTo));
+                dispatch(checkUserSubscribeAction(userTo, userFrom));
+            }
+        } catch (error) {
+            dispatch(unsubscribeFailure(error));
+        }
+    }
+}
 
 // Get subscribe Number
-export const getsubscribeNumberAction = (userId) => {
+export const getsubscribeNumberAction = (userTo) => {
     return async (dispatch) => {
         dispatch(getSubscribeNumberStart());
         try {
-            const response = await apiCall.post('/subscribeNumber', {userId: userId});
+            const response = await apiCall.post('/subscribeNumber', {userTo: userTo});
             const result = await response.data;
             dispatch(getSubscribeNumberSuccess(result.subscribeNumber));
         } catch (error) {

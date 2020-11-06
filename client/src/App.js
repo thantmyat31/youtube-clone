@@ -9,11 +9,13 @@ import LoginPage from './pages/Login/Login.page';
 import RegisterPage from './pages/Register/Register.page';
 import NotFoundPage from './pages/NotFound/NotFound.page';
 import UploadVideoPage from './pages/UploadVideo/UploadVideo.page';
+import VideoDetailsPage from './pages/VideoDetails/VideoDetails.page';
+import SubscriptionPage from './pages/Subscription/Subscription.page';
 
 import Header from './components/Header/Header';
 import AuthRoute from './components/AuthRoute/AuthRoute';
+
 import axios from 'axios';
-import VideoDetailsPage from './pages/VideoDetails/VideoDetails.page';
 
 const App = ({ saveUserInState }) => {
 	useEffect(() => {
@@ -48,6 +50,11 @@ const App = ({ saveUserInState }) => {
 		<>
 			<Header />
 			<Switch>
+				<AuthRoute 
+					exact
+					path="/subscription"
+					component={SubscriptionPage}
+				/>
 				<AuthRoute 
 					exact
 					path="/video/upload"

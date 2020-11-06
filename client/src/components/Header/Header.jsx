@@ -6,6 +6,8 @@ import { userLogout } from '../../redux/user/user.action';
 
 import styles from './Header.module.css';
 import { FaYoutube } from 'react-icons/fa';
+import { BsUpload } from 'react-icons/bs';
+import cx from 'classnames';
 
 const Header = ({ currentUser, userLogout }) => {
 	const history = useHistory();
@@ -13,13 +15,23 @@ const Header = ({ currentUser, userLogout }) => {
 	const logout = () => {
 		userLogout();
 		localStorage.setItem('auth-token', '');
-		history.push("/login");
-    }
+		history.push('/login');
+	};
 	return (
 		<header className={styles.header}>
-			<Link className={styles.logo} to="/">
-				<FaYoutube className={styles.icon} /> MY Tube
-			</Link>
+			<div className={styles.logoContainer}>
+				<Link className={styles.logo} to="/">
+					<FaYoutube className={styles.logoIcon} /> MY Tube
+				</Link>
+				<div className={cx(styles.navLinks, styles.right)}>
+					<Link className={styles.link} to="/">
+						Home
+					</Link>
+					<Link className={styles.link} to="/subscription">
+						Subscription
+					</Link>
+				</div>
+			</div>
 			{!currentUser ? (
 				<div className={styles.navLinks}>
 					<Link className={styles.link} to="/login">
@@ -31,8 +43,12 @@ const Header = ({ currentUser, userLogout }) => {
 				</div>
 			) : (
 				<div className={styles.navLinks}>
-					<Link className={styles.link} to="/video/upload">Upload</Link>
-					<p className={styles.link} onClick={logout}>Logout</p>
+					<Link className={styles.link} to="/video/upload">
+						<BsUpload className={styles.uploadIcon} />
+					</Link>
+					<p className={styles.link} onClick={logout}>
+						Logout
+					</p>
 				</div>
 			)}
 		</header>
@@ -43,8 +59,8 @@ const mapStateToProps = (state) => ({
 	currentUser: state.user.currentUser
 });
 
-const mapDispatchToProps = dispatch => ({
-    userLogout: () => dispatch(userLogout())
-})
+const mapDispatchToProps = (dispatch) => ({
+	userLogout: () => dispatch(userLogout())
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

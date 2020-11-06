@@ -8,6 +8,12 @@
     box-shadow: 0 1px 7px 0 #ddd;
 }
 
+.logoContainer {
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+}
+
 .logo {
     color:#444;
     font-weight:bold;
@@ -17,7 +23,7 @@
     font-size:1.2rem;
 }
 
-.logo .icon {
+.logo .logoIcon {
     width:1.8rem;
     height:1.8rem;
     fill:#ff6600;
@@ -27,15 +33,32 @@
 .navLinks {
     display:flex;
     flex-direction:row;
+    align-items: center;
+}
+
+.navLinks.right {
+    margin-left:20px;
 }
 
 .navLinks .link {
     text-transform:uppercase;
     color:#777;
-    margin-left:15px;
+    margin-left:20px;
     cursor: pointer;
     font-size:0.9rem;
     font-weight:600;
+    display: flex;
+    align-items: center;
+    transition: 0.4s;
+}
+
+.navLinks .link:hover {
+    color:#ff6600;
+}
+
+.uploadIcon {
+    stroke-width: 1px;
+    font-size: 25px;
 }
 
 @media screen and (max-width:770px) {
