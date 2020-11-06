@@ -14,8 +14,7 @@ const SubscriptionPage = () => {
 
     useEffect(() => {
         const userFrom = currentUser && currentUser.id;
-        dispatch(getSubscribedVideosAction(userFrom));
-        
+        if(userFrom) dispatch(getSubscribedVideosAction(userFrom));
     }, [dispatch, currentUser]);
 
     const VideosRow = () => (

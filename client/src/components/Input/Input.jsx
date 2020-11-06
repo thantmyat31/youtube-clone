@@ -1,23 +1,29 @@
 import React from 'react';
 import styles from './Input.module.css';
 
-const Input = ({ label, name, type, autoComplete, onChange, required }) => {
-    return ( 
-        <div className={styles.inputGroup}>
-            <label htmlFor={name}>
-                {label ? label : name} 
-                {required && <b> &#8727;</b>}
-            </label>
-            <input
+const Input = ({ label, noLabel, name, type, autoComplete, onChange, required, placeholder, style, onFocus, onBlur }) => {
+	return (
+		<div className={styles.inputGroup}>
+			{!noLabel && (
+				<label htmlFor={name}>
+					{label ? label : name}
+					{required && <b> &#8727;</b>}
+				</label>
+			)}
+			<input
                 name={name}
                 id={name}
                 type={type}
                 autoComplete={autoComplete}
-                onChange={onChange} 
+                onChange={onChange}
                 required={required}
-            />
-        </div>
-     );
-}
- 
+                placeholder={placeholder}
+                style={style}
+                onFocus={onFocus}
+                onBlur={onBlur}
+			/>
+		</div>
+	);
+};
+
 export default Input;

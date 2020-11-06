@@ -1,0 +1,43 @@
+.details h3 {
+    margin-top:30px;
+    margin-bottom:10px;
+    font-size:1.3rem;
+    font-weight:500;
+}
+
+.details .videoInfo {
+    color:#555;
+    font-weight: 600;
+    font-size: 14px;
+    padding-bottom:20px;
+    border-bottom: 1px solid #d6d6d6;
+    margin-bottom:20px;
+}
+
+.details .infoAndSub {
+    display:flex;
+    flex-direction:row;
+    flex-wrap:wrap;
+    justify-content: space-between;
+}
+
+.details .infoAndSub .writerInfo {
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom:15px;
+}
+
+.details .infoAndSub .writerInfo span {
+    margin-left:15px;
+}
+
+.details .infoAndSub .writerInfo span h4 {
+    font-size:1.2rem;
+}
+
+.details .infoAndSub .writerInfo span p {
+    font-size: 0.9rem;
+    color:#555;
+    font-weight: 600;
+}

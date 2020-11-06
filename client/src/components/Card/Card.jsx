@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import styles from './Card.module.css';
 import moment from 'moment';
+import UserAvatar from '../UserAvatar/UserAvatar';
 
 const Card = ({ item }) => {
     const history = useHistory();
@@ -26,10 +27,7 @@ const Card = ({ item }) => {
                     </span>
                 </div>
                 <div className={styles.info}>
-                    <img
-                        src={item.writer.image ? item.writer.image :`https://ui-avatars.com/api/?name=${item.writer.displayName}&size=40&background=random`}
-                        alt="user profile"
-                    />
+                    <UserAvatar user={item.writer} />
                     <span className={styles.details}>
                         <h4>{item.title}</h4>
                         <p>{item.writer.displayName}</p>
