@@ -15,6 +15,30 @@
     color: #ff6600;
 }
 
+.button.subscribed {
+    background:#ececec;
+    border-color:#ececec;
+    color:#555;
+}
+
+.button.subscribed:hover {
+    border:1px solid #ececec;
+    color:#ececec;
+    background:#555;
+}
+
+.button.comment {
+    background:#ccc;
+    border-color:#ccc;
+    color:#555;
+}
+
+.button.comment:hover {
+    border:1px solid #ccc;
+    color:#ccc;
+    background:#555;
+}
+
 .button:focus {
     outline: none;
 }

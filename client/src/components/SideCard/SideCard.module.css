@@ -35,9 +35,7 @@
     margin-left:10px;
 }
 
-.card .info h4 {
-    font-size:1rem;
-    font-weight: 500;
+.card .info h5 {
     margin-bottom:5px;
     display:-webkit-box;
     -webkit-line-clamp: 2;

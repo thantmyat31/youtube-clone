@@ -13,8 +13,7 @@ const commentSchema = mongoose.Schema({
     },
     responseTo: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true
+        ref: "User"
     },
     content: {
         type: String,

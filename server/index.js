@@ -25,6 +25,7 @@ app.use(cors());
 app.use('/users', require('./routes/userRouter'));
 app.use('/video', require('./routes/videoRouter'));
 app.use('/subscribe', require('./routes/subscribeRouter'));
+app.use('/comment', require('./routes/commentRouter'));
 
 app.use(express.static('./uploads/'));
 
@@ -33,16 +34,16 @@ if(process.env.NODE_ENV === 'production') {
 }
 
 
-app.use((err, req, res, next) => {
-    if(err.message) {
+app.use((error, req, res, next) => {
+    if(error.message) {
         res.json({
-            message: err.message,
-            stack: process.env.NODE_ENV === 'production'? '@-@': err.stack
+            message: error.message,
+            stack: process.env.NODE_ENV === 'production'? '@-@': error.stack
         });
     } else {
         res.json({
-            message: err
-        })
+            message: error
+        });
     }
 });
 

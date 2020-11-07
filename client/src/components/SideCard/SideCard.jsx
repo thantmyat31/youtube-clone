@@ -15,7 +15,7 @@ const SideCard = ({ video }) => {
                 <span>{minute} : {second}</span>
             </div>
             <div className={styles.info}>
-                <h4>{video.title}</h4>
+                <h5>{video.title}</h5>
                 <p>{video.writer.displayName}</p>
                 <span>
                     {video.views} {video.views > 0 ? 'views': 'view'} <b>·</b> {moment(video.createdAt).format('MMM Do, YYYY')}

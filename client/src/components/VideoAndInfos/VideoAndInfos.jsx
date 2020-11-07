@@ -19,7 +19,7 @@ const VideoAndInfos = ({ video, subscribeNumber, subscribed, onClick }) => {
                 onClick={onClick} 
             />
             <Description desc={video.description} />
-            <Comments />
+            <Comments postId={video._id} />
         </div>
      );
 }

@@ -1,8 +1,6 @@
 .details h3 {
     margin-top:30px;
     margin-bottom:10px;
-    font-size:1.3rem;
-    font-weight:500;
 }
 
 .details .videoInfo {
@@ -30,10 +28,6 @@
 
 .details .infoAndSub .writerInfo span {
     margin-left:15px;
-}
-
-.details .infoAndSub .writerInfo span h4 {
-    font-size:1.2rem;
 }
 
 .details .infoAndSub .writerInfo span p {

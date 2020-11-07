@@ -25,8 +25,7 @@ const Details = ({ video, subscribeNumber, subscribed, onClick }) => {
                     <Button 
                         type="button" 
                         title={subscribed ? "Subscribed" : "Subscribe"} 
-                        style={subscribed ? 
-                                {background:"#ececec", borderColor:'#ececec',color:'#555'}: null} 
+                        subscribed={subscribed} 
                         onClick={onClick} 
                     />
                 </div>

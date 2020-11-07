@@ -29,7 +29,7 @@ const Card = ({ item }) => {
                 <div className={styles.info}>
                     <UserAvatar user={item.writer} />
                     <span className={styles.details}>
-                        <h4>{item.title}</h4>
+                        <h5>{item.title}</h5>
                         <p>{item.writer.displayName}</p>
                         <span>{item.views} {item.views > 0 ? "views" : "view"} <b>·</b> {moment(item.createdAt).format('MMM Do, YYYY')}</span>
                     </span>
