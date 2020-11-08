@@ -20,26 +20,30 @@ import axios from 'axios';
 const App = ({ saveUserInState }) => {
 	useEffect(() => {
 		const checkLoggin = async () => {
-			let token = await localStorage.getItem("auth-token");
-			if(!token) {
-				localStorage.setItem("auth-token", "");
-				token = "";
-			}
-
-			const response = await axios.post('http://localhost:2020/users/isTokenValid',null,{
-				headers : {
-					"x-auth-token": token
+			try {
+				let token = await localStorage.getItem("auth-token");
+				if(!token) {
+					localStorage.setItem("auth-token", "");
+					token = "";
 				}
-			});
 
-			const isTokenValid = await response.data;
-			if(isTokenValid) {
-				const user = await axios.get('http://localhost:2020/users', {
-					headers: {
+				const response = await axios.post('http://localhost:2020/users/isTokenValid',null,{
+					headers : {
 						"x-auth-token": token
 					}
 				});
-				saveUserInState(token, user.data);
+
+				const isTokenValid = await response.data;
+				if(isTokenValid) {
+					const user = await axios.get('http://localhost:2020/users', {
+						headers: {
+							"x-auth-token": token
+						}
+					});
+					saveUserInState(token, user.data);
+				}
+			} catch (error) {
+				console.log("[Access token error]:", error);
 			}
 		}
 
