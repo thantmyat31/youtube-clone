@@ -26,6 +26,7 @@ app.use('/users', require('./routes/userRouter'));
 app.use('/video', require('./routes/videoRouter'));
 app.use('/subscribe', require('./routes/subscribeRouter'));
 app.use('/comment', require('./routes/commentRouter'));
+app.use('/like', require('./routes/likeRouter'));
 
 app.use(express.static('./uploads/'));
 

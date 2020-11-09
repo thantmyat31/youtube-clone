@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './Input.module.css';
 
-const Input = ({ label, noLabel, name, type, autoComplete, onChange, required, placeholder, style, onFocus, onBlur }) => {
+const Input = ({ label, noLabel, name, type, value, autoComplete, onChange, required, placeholder, style, onFocus, onBlur }) => {
 	return (
 		<div className={styles.inputGroup}>
 			{!noLabel && (
@@ -20,7 +20,8 @@ const Input = ({ label, noLabel, name, type, autoComplete, onChange, required, p
                 placeholder={placeholder}
                 style={style}
                 onFocus={onFocus}
-                onBlur={onBlur}
+				onBlur={onBlur}
+				value={value}
 			/>
 		</div>
 	);

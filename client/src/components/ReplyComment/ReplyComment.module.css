@@ -1,0 +1,10 @@
+.container {
+    padding-left:55px;
+}
+
+.container .viewmore {
+    color: #00a0e6;
+    font-weight:500;
+    cursor: pointer;
+    margin-bottom: 10px;
+}

@@ -1,0 +1,18 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-weight:500;
+    color:#777;
+}
+
+.container .icon {
+    font-size:1.4rem;
+    margin-left:10px;
+    cursor: pointer;
+}
+
+.container b {
+    font-size:0.9rem;
+    margin-left: 5px;
+}

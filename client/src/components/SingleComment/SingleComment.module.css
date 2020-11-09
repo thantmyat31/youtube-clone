@@ -1,13 +1,27 @@
 .container {
     display: flex;
     flex-direction: row;
-    margin-bottom:20px;
 }
 
 .container .comment {
     margin-left:15px;
+    width:100%;
 }
 
 .container .comment p {
     font-size:0.9rem;
+}
+
+.container .reply {
+    display:flex;
+    flex-direction: row;
+    margin-top:10px;
+}
+
+.container .reply b.button {
+    text-transform: uppercase;
+    font-weight:500;
+    color:#555;
+    cursor: pointer;
+    margin-left:15px;
 }

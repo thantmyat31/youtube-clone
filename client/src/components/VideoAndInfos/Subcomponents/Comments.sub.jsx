@@ -2,26 +2,17 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeCommentAction } from '../../../redux/comment/comment.action';
 
-import UserAvatar from '../../UserAvatar/UserAvatar';
-import Input from './../../Input/Input';
-import Button from './../../Button/Button';
-import styles from './Comments.sub.module.css';
 import SingleComment from '../../SingleComment/SingleComment';
-import cx from 'classnames';
+import CommentForm from '../../CommentForm/CommenForm';
+
+import styles from './Comments.sub.module.css';
+import ReplyComment from '../../ReplyComment/ReplyComment';
 
 const Comments = ({ postId }) => {
-	const [ isFocus, setIsFocus ] = useState(false);
-	const [ content, setContent ] = useState();
+	const [ content, setContent ] = useState("");
 	const { currentUser } = useSelector((state) => state.user);
 	const { comments } = useSelector((state) => state.comment);
 	const dispatch = useDispatch();
-
-	const handleOnChange = (event) => {
-		const value = event.target.value.trim();
-		if (value !== '') {
-			setContent(value);
-		}
-	};
 
 	const handleOnSubmit = (event) => {
 		event.preventDefault();
@@ -31,32 +22,24 @@ const Comments = ({ postId }) => {
 		setContent('');
 	};
 
+	const getContent = (value) => {
+		setContent(value);
+	}
+
 	return (
 		<div className={styles.container}>
 			<h4>Comments</h4>
-			<div className={isFocus?cx(styles.formSection, styles.focus):styles.formSection}>
-				<UserAvatar user={currentUser && currentUser} />
-				<form onSubmit={handleOnSubmit}>
-					<Input
-						onFocus={() => setIsFocus(true)}
-						noLabel={true}
-						name="comment"
-						autoComplete="comment"
-						onChange={handleOnChange}
-						required
-						placeholder="Add a public comment..."
-						style={{ backgroundColor: '#F9F9F9', marginTop: 0 }}
-					/>
-					{isFocus && (
-						<div className={styles.buttonContainer}>
-							<b onClick={() => setIsFocus(false)}>Cancel</b>
-							<Button type="submit" title="Comment" comment={true} />
-						</div>
-					)}
-				</form>
-			</div>
+			<CommentForm 
+				currentUser={currentUser && currentUser}
+				getContent={getContent}
+				content={content}
+				onSubmit={handleOnSubmit}
+			/>
 			{comments && comments.map((comment, index) => (
-				!comment.responseTo && <SingleComment key={index} comment={comment} />
+				!comment.responseTo && <div key={index} className={styles.comments}>
+					<SingleComment comment={comment} postId={postId} />
+					<ReplyComment comments={comments} postId={postId} parentCommentId={comment._id} />
+				</div>
 			))}
 		</div>
 	);

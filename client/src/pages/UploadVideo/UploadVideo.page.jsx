@@ -41,7 +41,7 @@ const UploadVideoPage = () => {
 		event.preventDefault();
 
 		if(!currentUser) {
-			alert("Please login first!")
+			alert("Please login first!");
 			return history.push("login");
 		}
 
@@ -55,6 +55,8 @@ const UploadVideoPage = () => {
 			filePath === '' ||
 			duration === ''
 		) return alert("Please fill all the required fields");
+
+		if(title.length > 50) return alert("Title field should not exceed 50 charactors!")
 
 		const variables = {
 			writer: currentUser.id,

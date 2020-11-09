@@ -1,0 +1,5 @@
+export const likeActionTypes = {
+    GET_LIKE_START: 'GET_LIKE_START',
+    GET_LIKE_SUCCESS: 'GET_LIKE_SUCCESS',
+    GET_LIKE_FAILURE: 'GET_LIKE_FAILURE'
+}
