@@ -14,6 +14,7 @@ const SingleComment = ({ comment, postId }) => {
 	const { currentUser } = useSelector(state => state.user);
 	const dispatch = useDispatch();
 
+
 	const getContent = (value) => {
 		setContent(value);
 	}
@@ -50,8 +51,9 @@ const SingleComment = ({ comment, postId }) => {
 					<p>{comment.content}</p>
 					<div className={styles.reply}>
 						<LikeAndDislike 
+							comment={true}
 							commentId={comment._id} 
-							userId={currentUser.id} 
+							userId={currentUser && currentUser.id} 
 						/>
 						<b className={styles.button} onClick={handleOnCommentBoxOpen}>Reply</b>
 					</div>

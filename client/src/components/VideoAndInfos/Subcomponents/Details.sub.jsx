@@ -1,14 +1,15 @@
 import React from 'react';
-import Button from '../../Button/Button';
-
-import styles from './Details.sub.module.css';
-import moment from 'moment';
-import UserAvatar from '../../UserAvatar/UserAvatar';
-import LikeAndDislike from '../../LikeAndDislike/LikeAndDislike';
 import { useSelector } from 'react-redux';
 
+import Button from '../../Button/Button';
+import UserAvatar from '../../UserAvatar/UserAvatar';
+import LikeAndDislike from '../../LikeAndDislike/LikeAndDislike';
+import moment from 'moment';
+import styles from './Details.sub.module.css';
+
 const Details = ({ video, subscribeNumber, subscribed, onClick }) => {
-    const { currentUser } = useSelector(state => state.user);
+	const { currentUser } = useSelector(state => state.user);
+
 	return (
 		<div className={styles.details}>
 			<h3>{video.title}</h3>
@@ -17,7 +18,12 @@ const Details = ({ video, subscribeNumber, subscribed, onClick }) => {
                     {video.views} {video.views > 0 ? 'views' : 'view'} <b>·</b> {" "}
 				    {moment(video.createdAt).format('MMM Do, YYYY')}
                 </span>
-                <LikeAndDislike video videoId={video._id} userId={currentUser.id} />
+				
+				<LikeAndDislike 
+					userId={currentUser && currentUser.id}
+					videoId={video._id}
+					video={true}
+				/>
 			</div>
 
 			<div className={styles.infoAndSub}>
