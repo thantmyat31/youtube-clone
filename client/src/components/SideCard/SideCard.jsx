@@ -1,15 +1,22 @@
 import React from 'react';
 import styles from './SideCard.module.css';
 import moment from 'moment';
+import { useHistory } from 'react-router-dom';
 
 const SideCard = ({ video }) => {
+    const history = useHistory();
 
     let minute = Math.floor(video.duration / 60);
     let second = Math.floor(video.duration - (minute * 60));
     minute = minute < 10 ? `0${minute}` : minute;
     second = second < 10 ? `0${second}` : second;
+
+    const handleOnOpenVideo = () => {
+        history.push(`/video/${video._id}`);
+    }
+
     return ( 
-        <div className={styles.card}>
+        <div className={styles.card} onClick={handleOnOpenVideo}>
             <div className={styles.image}>
                 <img src={`http://localhost:2020/${video.thumbnail}`} alt="thumbnail" />
                 <span>{minute} : {second}</span>

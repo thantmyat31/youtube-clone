@@ -14,7 +14,7 @@ const Card = ({ item }) => {
     if (second < 10) second = `0${second}`;
     
     const handleOnOpenVideo = () => {
-        history.push(`/video/${item._id}`)
+        history.push(`/video/${item._id}`);
     }
 
 	return (

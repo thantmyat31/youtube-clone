@@ -25,43 +25,55 @@ const LikeAndDislike = (props) => {
     }, [props.userId, props.videoId, props.commentId, props.video]);
 
     useEffect(() => {
-        apiCall.post('/getlikes', variable)
-            .then(response => {
-                console.log('getlikes',response.data)
+        let isCleanUp = false;
+        if(!isCleanUp) {
 
-                if (response.data.success) {
-                    //How many likes does this video or comment have 
-                    setLikes(response.data.likes.length)
+            apiCall.post('/getlikes', variable)
+                .then(response => {
+                    console.log('getlikes',response.data)
 
-                    //if I already click this like button or not 
-                    response.data.likes.forEach(like => {
-                        if (like.userId === props.userId) {
-                            setLikeAction('liked')
-                        }
-                    })
-                } else {
-                    alert('Failed to get likes')
-                }
-            })
+                    if (response.data.success) {
+                        //How many likes does this video or comment have 
+                        setLikes(response.data.likes.length)
 
-        apiCall.post('/getdislikes', variable)
-            .then(response => {
-                console.log('getdislike',response.data);
-                
-                if (response.data.success) {
-                    //How many likes does this video or comment have 
-                    setDislikes(response.data.dislikes.length)
+                        //if I already click this like button or not 
+                        response.data.likes.forEach(like => {
+                            if (like.userId === props.userId) {
+                                setLikeAction('liked')
+                            }
+                        })
+                    } else {
+                        alert('Failed to get likes')
+                    }
+                });
+        }
+            
+        if(!isCleanUp) { 
 
-                    //if I already click this like button or not 
-                    response.data.dislikes.forEach(dislike => {
-                        if (dislike.userId === props.userId) {
-                            setDislikeAction('disliked')
-                        }
-                    })
-                } else {
-                    alert('Failed to get dislikes')
-                }
-            })
+            apiCall.post('/getdislikes', variable)
+                .then(response => {
+                    console.log('getdislike',response.data);
+
+                    if (response.data.success) {
+                        //How many likes does this video or comment have 
+                        setDislikes(response.data.dislikes.length)
+
+                        //if I already click this like button or not 
+                        response.data.dislikes.forEach(dislike => {
+                            if (dislike.userId === props.userId) {
+                                setDislikeAction('disliked')
+                            }
+                        })
+                    } else {
+                        alert('Failed to get dislikes')
+                    }
+                });
+        }
+
+        return () => {
+            isCleanUp = true;
+        }
+
     }, [variable, props.userId])
 
 
@@ -134,13 +146,13 @@ const LikeAndDislike = (props) => {
                     LikeAction === 'liked'?cx(styles.icon, styles.like, styles.liked):
                     cx(styles.icon, styles.like)
                 } onClick={onLike} /> 
-                <b>{Likes}</b>
+                <b>{Likes > 0 && Likes}</b>
 
                 <MdThumbDown className={
                     DislikeAction === 'disliked'?cx(styles.icon, styles.disliked):
                     styles.icon
                 } onClick={onDisLike} /> 
-                <b>{Dislikes}</b> 
+                <b>{Dislikes > 0 && Dislikes}</b> 
             </div>
         </div>
      );

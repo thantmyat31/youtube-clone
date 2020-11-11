@@ -15,36 +15,53 @@ import SideCard from './../../components/SideCard/SideCard';
 
 const VideoDetailsPage = ({ match }) => {
     const videoId = match.params.videoId;
+    const { currentUser } = useSelector(state => state.user);
     const {video, loading, videos} = useSelector(state => state.video);
     const { subscribeNumber, isCurrentUserSubscribed } = useSelector(state => state.subscribe);
-    const { currentUser } = useSelector(state => state.user);
     const dispatch = useDispatch();
+    const videosList = videos && videos.filter(v => v._id !== videoId);
 
     // Get video by id
     useEffect(() => {
-        dispatch(getVideoByIdAction(videoId));
+        let isCleanUp = false;
+        if(!isCleanUp) dispatch(getVideoByIdAction(videoId));
+        return () => {
+            isCleanUp = true;
+        }
     }, [dispatch, videoId]);
 
     // Get numbers of subscribed user
     useEffect(() => {
+        let isCleanUp = false;
         if(video) {
-            dispatch(getsubscribeNumberAction(video.writer._id));
+            if(!isCleanUp) dispatch(getsubscribeNumberAction(video.writer._id));
+        }
+        return () => {
+            isCleanUp = true;
         }
     }, [dispatch, video]);
 
     // Check current user is subscribed or not
     useEffect(() => {
+        let isCleanUp = false;
         if(currentUser && video) {
-            dispatch(checkUserSubscribeAction(video.writer._id, currentUser.id ));
+            if(!isCleanUp) dispatch(checkUserSubscribeAction(video.writer._id, currentUser.id ));
+        }
+        return () => {
+            isCleanUp = true;
         }
     }, [dispatch, currentUser, video]);
 
     // Get comments for current post
     useEffect(() => {
+        let isCleanUp = false;
         const data = {
             postId: videoId
         };
-        dispatch(getCommentsAction(data));
+        if(!isCleanUp) dispatch(getCommentsAction(data));
+        return () => {
+            isCleanUp = true;
+        }
     }, [dispatch, videoId]);
     
     const subscription = () => {
@@ -64,7 +81,7 @@ const VideoDetailsPage = ({ match }) => {
                 />
                 <div className="col-c3 card-row-container">
                     {
-                        videos && videos.map((video, index) => <SideCard key={index} video={video} />)   
+                        videosList && videosList.map((video, index) => <SideCard key={index} video={video} />)   
                     }
                 </div>
             </div>
