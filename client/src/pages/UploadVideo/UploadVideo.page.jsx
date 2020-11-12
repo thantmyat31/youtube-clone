@@ -23,6 +23,7 @@ const Category = [
 
 const UploadVideoPage = () => {
 	const history = useHistory();
+	const [ uploadPercent, setUploadPercent ] = useState(0);
 
 	const [ title, setTitle ] = useState();
 	const [ description, setDescription ] = useState();
@@ -88,7 +89,8 @@ const UploadVideoPage = () => {
 		const config = {
 			headers: {
 				'content-type': 'multipart/form-data'
-			}
+			},
+			onUploadProgress: (progress) => setUploadPercent((progress.loaded * 100) / progress.total)
 		};
 		console.log(files);
 		formData.append('file', files[0]);
@@ -117,6 +119,10 @@ const UploadVideoPage = () => {
 					.catch((error) => {
 						console.log('[Failed to generate thumbnail]', error);
 					});
+				
+				setTimeout(() => {
+					setUploadPercent(0);
+				},1000);
 			}
 		} catch (error) {
 			console.log('[Failed to save the video]', error);
@@ -130,13 +136,19 @@ const UploadVideoPage = () => {
 					<div className={styles.uploadContainer}>
 						<ItemDropzone onDrop={onDrop} />
 
-						{thumbnail && (
-							<div className={styles.thumbnail}>
+						<div className={styles.thumbnail}>
+							{thumbnail && (
 								<img src={`http://localhost:2020/${thumbnail}`} alt="thumbnail" />
-							</div>
-						)}
+							)}
+							{uploadPercent > 0 && 
+								<span>
+									{uploadPercent && uploadPercent}%
+									<b style={{ width:`${uploadPercent}%` }}></b>
+								</span>
+							}
+						</div>
 					</div>
-					
+						
 
 					<Input
 						type="text"
