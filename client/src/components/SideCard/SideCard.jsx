@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './SideCard.module.css';
 import moment from 'moment';
 import { useHistory } from 'react-router-dom';
+import { increseViewCount } from './../../api/api';
 
 const SideCard = ({ video }) => {
     const history = useHistory();
@@ -13,6 +14,7 @@ const SideCard = ({ video }) => {
 
     const handleOnOpenVideo = () => {
         history.push(`/video/${video._id}`);
+        increseViewCount(video._id);
     }
 
     return ( 
@@ -25,7 +27,7 @@ const SideCard = ({ video }) => {
                 <h5>{video.title}</h5>
                 <p>{video.writer.displayName}</p>
                 <span>
-                    {video.views} {video.views > 0 ? 'views': 'view'} <b>·</b> {moment(video.createdAt).format('MMM Do, YYYY')}
+                    {video.views} {video.views > 1 ? 'views': 'view'} <b>·</b> {moment(video.createdAt).format('MMM Do, YYYY')}
                 </span>
             </div>
         </div>

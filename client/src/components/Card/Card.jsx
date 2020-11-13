@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import styles from './Card.module.css';
 import moment from 'moment';
 import UserAvatar from '../UserAvatar/UserAvatar';
+import { increseViewCount } from './../../api/api';
 
 const Card = ({ item }) => {
     const history = useHistory();
@@ -15,6 +16,7 @@ const Card = ({ item }) => {
     
     const handleOnOpenVideo = () => {
         history.push(`/video/${item._id}`);
+        increseViewCount(item._id);
     }
 
 	return (
@@ -31,7 +33,7 @@ const Card = ({ item }) => {
                     <span className={styles.details}>
                         <h5>{item.title}</h5>
                         <p>{item.writer.displayName}</p>
-                        <span>{item.views} {item.views > 0 ? "views" : "view"} <b>·</b> {moment(item.createdAt).format('MMM Do, YYYY')}</span>
+                        <span>{item.views} {item.views > 1 ? "views" : "view"} <b>·</b> {moment(item.createdAt).format('MMM Do, YYYY')}</span>
                     </span>
                 </div>
             </div>

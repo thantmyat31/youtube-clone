@@ -135,4 +135,18 @@ router.post('/getSubscriptionVideos', (req, res) => {
         });
 });
 
+router.post('/viewIncrease', (req, res) => {
+    Video.findByIdAndUpdate(req.body.videoId, { $inc: { "views": 1 } })
+        .exec((error, views) => {
+            if(error) return res.status(400).json({
+                success: false,
+                error
+            });
+            return res.status(200).json({
+                success: true,
+                views
+            });
+        });
+});
+
 module.exports = router;
