@@ -65,6 +65,11 @@ export const checkUserFailure = (error) => ({
     payload: error
 });
 
+// Reset user subscribtion
+export const resetUserSibscriptionAction = () => ({
+    type: subscribeActionTypes.RESET_USER_SUBSCRIPTION
+});
+
 // Make subscription
 export const subscriptionAction = (userTo, userFrom) => {
     return async (dispatch) => {

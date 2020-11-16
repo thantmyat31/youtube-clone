@@ -67,11 +67,7 @@ const App = ({ saveUserInState }) => {
 				<Route path="/video/:videoId" component={VideoDetailsPage} />
 				<Route path="/login" component={LoginPage} />
 				<Route path="/register" component={RegisterPage} />
-				<AuthRoute 
-					exact
-					path="/"
-					component={LandingPage}
-				/>
+				<Route exact path="/" component={LandingPage} />
 				<Route path="*" component={NotFoundPage} />
 			</Switch>
 		</>

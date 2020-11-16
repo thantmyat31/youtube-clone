@@ -51,9 +51,9 @@ const SingleComment = ({ comment, postId }) => {
 					<p>{comment.content}</p>
 					<div className={styles.reply}>
 						<LikeAndDislike 
-							comment={true}
+							video={false}
 							commentId={comment._id} 
-							userId={currentUser && currentUser.id} 
+							userId={currentUser ? currentUser.id : null} 
 						/>
 						<b className={styles.button} onClick={handleOnCommentBoxOpen}>Reply</b>
 					</div>

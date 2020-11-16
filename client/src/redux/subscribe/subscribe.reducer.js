@@ -3,7 +3,7 @@ import { subscribeActionTypes } from './subscribe.type';
 const INITIAL_STATE = {
     subscribeNumber: null,
     isCurrentUserSubscribed: false,
-    errors: [],
+    error: null,
     loading: false,
 }
 
@@ -21,14 +21,14 @@ const subscribeReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 loading: false,
-                errors: [...state.error, action.payload]
+                error: action.payload
             }
         
         case subscribeActionTypes.GET_SUBSCRIBE_NUMBER_SUCCESS:
             return {
                 ...state,
                 loading: false,
-                errors: [],
+                error: null,
                 subscribeNumber: action.payload
             }
 
@@ -36,8 +36,14 @@ const subscribeReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 loading: false,
-                errors: [],
+                error: null,
                 isCurrentUserSubscribed: action.payload
+            }
+
+        case subscribeActionTypes.RESET_USER_SUBSCRIPTION:
+            return {
+                ...state,
+                isCurrentUserSubscribed: false
             }
 
         default:

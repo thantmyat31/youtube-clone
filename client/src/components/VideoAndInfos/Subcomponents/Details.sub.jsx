@@ -20,7 +20,7 @@ const Details = ({ video, subscribeNumber, subscribed, onClick }) => {
                 </span>
 				
 				<LikeAndDislike 
-					userId={currentUser && currentUser.id}
+					userId={currentUser ? currentUser.id: null}
 					videoId={video._id}
 					video={true}
 				/>

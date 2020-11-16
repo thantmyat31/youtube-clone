@@ -5,22 +5,31 @@ import Input from './../Input/Input';
 
 import styles from './CommentForm.module.css';
 import cx from 'classnames';
+import { useHistory } from 'react-router-dom';
 
 const CommentForm = ({ currentUser, getContent, onSubmit, content, onClose, isReply }) => {
-    const [ isFocus, setIsFocus ] = useState(false);
+	const [ isFocus, setIsFocus ] = useState(false);
+	const history = useHistory();
 
     const handleOnClose = () => {
         setIsFocus(false);
         getContent("");
         if(onClose) onClose(false);
-    }
+	}
+	
+	const handleOnFocus = () => {
+		if(!currentUser) {
+			return history.push('/login');
+		}
+		setIsFocus(true)
+	}
 
 	return (
 		<div className={isFocus?cx(styles.formSection, styles.focus):styles.formSection}>
-			<UserAvatar style={isReply&&{ width: '30px', height: '30px' }} user={currentUser} />
+			{currentUser && <UserAvatar style={isReply&&{ width: '30px', height: '30px' }} user={currentUser} />}
 			<form onSubmit={onSubmit}>
 				<Input
-                    onFocus={() => setIsFocus(true)}
+                    onFocus={handleOnFocus}
 					noLabel={true}
 					name="comment"
 					autoComplete="comment"

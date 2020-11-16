@@ -33,8 +33,8 @@ const LoginPage = ({ saveUserInState }) => {
 			// Save token in localStorage
 			localStorage.setItem("auth-token", token);
 
-			history.push("/");
-			
+			// After logged in, go back to current page
+			history.goBack();			
 		} catch (error) {
 			setError(error.message);
 		}

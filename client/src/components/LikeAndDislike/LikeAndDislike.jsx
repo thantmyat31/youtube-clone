@@ -1,20 +1,28 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
+import AlertBox from '../AlertBox/AlertBox';
 import { MdThumbUp, MdThumbDown } from 'react-icons/md';
-
 import styles from './LikeAndDislike.module.css';
-import cx from 'classnames';
 import axios from 'axios';
+import cx from 'classnames';
 
 const apiCall = axios.create({
     baseURL: 'http://localhost:2020/like'
-})
+});
 
 const LikeAndDislike = (props) => {
     const [Likes, setLikes] = useState(0);
     const [Dislikes, setDislikes] = useState(0);
     const [LikeAction, setLikeAction] = useState(null);
     const [DislikeAction, setDislikeAction] = useState(null);
+    
+    const [ showAlert, setShowAlert ] = useState(false);
+    const [ actionType, setActionType ] = useState('');
+
+    const { currentUser } = useSelector(state => state.user);
+    const history = useHistory();
 
     const variable = useMemo(() => {
         if (props.video) {
@@ -25,59 +33,62 @@ const LikeAndDislike = (props) => {
     }, [props.userId, props.videoId, props.commentId, props.video]);
 
     useEffect(() => {
-        let isCleanUp = false;
-        if(!isCleanUp) {
+        
+        const getLike = async () => {
+            try {
+                const response = await apiCall.post('/getlikes', variable);
+                const result = await response.data;
+                if(result.success) {
+                    //How many likes does this video or comment have 
+                    setLikes(result.likes.length);
 
-            apiCall.post('/getlikes', variable)
-                .then(response => {
-                    console.log('getlikes',response.data)
-
-                    if (response.data.success) {
-                        //How many likes does this video or comment have 
-                        setLikes(response.data.likes.length)
-
-                        //if I already click this like button or not 
-                        response.data.likes.forEach(like => {
+                    //if I already click this like button or not 
+                    if(props.userId) {
+                        result.likes.forEach(like => {
                             if (like.userId === props.userId) {
-                                setLikeAction('liked')
+                                setLikeAction('liked');
                             }
-                        })
-                    } else {
-                        alert('Failed to get likes')
-                    }
-                });
+                        });
+                    } 
+                }
+            } catch(error) {
+                console.log('Failed to get likes', error);
+            }
         }
-            
-        if(!isCleanUp) { 
+    
+        const getDislike = async () => {
+            try {
+                const response = await apiCall.post('/getdislikes', variable);
+                const result = await response.data;
+                if(result.success) {
+                    //How many likes does this video or comment have
+                    setDislikes(result.dislikes.length);
 
-            apiCall.post('/getdislikes', variable)
-                .then(response => {
-                    console.log('getdislike',response.data);
-
-                    if (response.data.success) {
-                        //How many likes does this video or comment have 
-                        setDislikes(response.data.dislikes.length)
-
-                        //if I already click this like button or not 
-                        response.data.dislikes.forEach(dislike => {
+                    //if I already click this like button or not 
+                    if(props.userId) {
+                        result.dislikes.forEach(dislike => {
                             if (dislike.userId === props.userId) {
                                 setDislikeAction('disliked')
                             }
-                        })
-                    } else {
-                        alert('Failed to get dislikes')
+                        });
                     }
-                });
+                }
+            } catch (error) {
+                console.log('Failed to get dislikes', error);
+            }
         }
-
-        return () => {
-            isCleanUp = true;
-        }
-
-    }, [variable, props.userId])
+        getLike();
+        getDislike();
+        
+    }, [variable, props.userId]);
 
 
     const onLike = () => {
+        if(!currentUser)  {
+            setActionType('Like');
+            return setShowAlert(true);
+        }
+
         if (LikeAction === null) {
             apiCall.post('/uplike', variable)
                 .then(response => {
@@ -108,6 +119,11 @@ const LikeAndDislike = (props) => {
     }
 
     const onDisLike = () => {
+        if(!currentUser)  {
+            setActionType("Don't like");
+            return setShowAlert(true);
+        }
+
         if (DislikeAction !== null) {
             apiCall.post('/undisLike', variable)
                 .then(response => {
@@ -137,7 +153,7 @@ const LikeAndDislike = (props) => {
                     }
                 })
         }
-    }
+    } 
 
     return ( 
         <div className={styles.container}>
@@ -154,8 +170,15 @@ const LikeAndDislike = (props) => {
                 } onClick={onDisLike} /> 
                 <b>{Dislikes > 0 && Dislikes}</b> 
             </div>
+            {showAlert && <AlertBox 
+                title={`${actionType} this video?`}
+                content="Sign in to make your opinion count."
+                onCancel={() => setShowAlert(false)}
+                onProceed={() => history.push('/login')}
+            />}
         </div>
      );
+     
 }
  
 export default LikeAndDislike;

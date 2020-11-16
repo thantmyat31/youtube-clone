@@ -5,7 +5,7 @@ const INITIAL_STATE = {
     token: undefined,
     currentUser: undefined,
     channelsId: [],
-    errors: [],
+    error: null,
     loading: false
 }
 
@@ -37,14 +37,14 @@ const userReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 loading: false,
-                errors: [...state.errors, action.payload]
+                error: action.payload
             }
 
         case subscribeActionTypes.SUBSCRIBE_SUCCESS:
             return {
                 ...state,
                 loading: false,
-                errors: [],
+                error: null,
                 channelsId: [...state.channelsId, action.payload]
             }
 
@@ -52,7 +52,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 loading: false,
-                errors: [],
+                error: null,
                 channelsId: state.channelsId.filter(cid => cid !== action.payload)
             }
 
