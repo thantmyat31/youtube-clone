@@ -128,4 +128,18 @@ router.get('/', auth,  async (req, res) => {
     });
 });
 
+router.post('/channel', (req, res) => {
+    User.findById(req.body.channelId)
+        .exec((error, channel) => {
+            if(error) return res.status(400).json({
+                success: false,
+                error
+            });
+            return res.status(200).json({
+                success: true,
+                channel
+            })
+        });
+})
+
 module.exports = router;

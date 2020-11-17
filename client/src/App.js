@@ -16,6 +16,8 @@ import Header from './components/Header/Header';
 import AuthRoute from './components/AuthRoute/AuthRoute';
 
 import axios from 'axios';
+import UserDashboard from './pages/UserDashboard/UserDashboard';
+import Channel from './pages/Channel/Channel';
 
 const App = ({ saveUserInState }) => {
 	useEffect(() => {
@@ -54,6 +56,11 @@ const App = ({ saveUserInState }) => {
 		<>
 			<Header />
 			<Switch>
+				<AuthRoute
+					exact
+					path="/user/dashboard"
+					component={UserDashboard} 
+				/>
 				<AuthRoute 
 					exact
 					path="/subscription"
@@ -65,6 +72,7 @@ const App = ({ saveUserInState }) => {
 					component={UploadVideoPage}
 				/>
 				<Route path="/video/:videoId" component={VideoDetailsPage} />
+				<Route path="/channel/:channelId" component={Channel} />
 				<Route path="/login" component={LoginPage} />
 				<Route path="/register" component={RegisterPage} />
 				<Route exact path="/" component={LandingPage} />

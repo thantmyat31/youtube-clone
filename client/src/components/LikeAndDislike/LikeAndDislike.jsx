@@ -32,16 +32,21 @@ const LikeAndDislike = (props) => {
         }
     }, [props.userId, props.videoId, props.commentId, props.video]);
 
+
     useEffect(() => {
-        
+        const source = axios.CancelToken.source();
+
         const getLike = async () => {
             try {
-                const response = await apiCall.post('/getlikes', variable);
+               
+                const response = await apiCall.post(`/getlikes`, variable,{
+                    cancelToken: source.token
+                    });
                 const result = await response.data;
                 if(result.success) {
                     //How many likes does this video or comment have 
                     setLikes(result.likes.length);
-
+    
                     //if I already click this like button or not 
                     if(props.userId) {
                         result.likes.forEach(like => {
@@ -50,15 +55,23 @@ const LikeAndDislike = (props) => {
                             }
                         });
                     } 
+                    
                 }
             } catch(error) {
-                console.log('Failed to get likes', error);
+                if (axios.isCancel(error)) {
+                    console.log('Api called is cancelled')
+                } else {
+                    console.log('Failed to get likes', error);
+                }
             }
+            
         }
-    
+
         const getDislike = async () => {
             try {
-                const response = await apiCall.post('/getdislikes', variable);
+                const response = await apiCall.post('/getdislikes', variable, {
+                    cancelToken: source.token
+                });
                 const result = await response.data;
                 if(result.success) {
                     //How many likes does this video or comment have
@@ -72,16 +85,25 @@ const LikeAndDislike = (props) => {
                             }
                         });
                     }
+
                 }
             } catch (error) {
-                console.log('Failed to get dislikes', error);
+                if (axios.isCancel(error)) {
+                    console.log('Api called is cancelled')
+                } else {
+                    console.log('Failed to get dislikes', error);
+                }
             }
         }
+
         getLike();
         getDislike();
+
+        return () => {
+            source.cancel();
+        };
         
     }, [variable, props.userId]);
-
 
     const onLike = () => {
         if(!currentUser)  {
@@ -90,7 +112,7 @@ const LikeAndDislike = (props) => {
         }
 
         if (LikeAction === null) {
-            apiCall.post('/uplike', variable)
+            apiCall.post(`/uplike`, variable)
                 .then(response => {
                     if (response.data.success) {
                         setLikes(Likes + 1)
@@ -106,7 +128,7 @@ const LikeAndDislike = (props) => {
                     }
                 })
         } else {
-            apiCall.post('/unlike', variable)
+            apiCall.post(`/unlike`, variable)
                 .then(response => {
                     if (response.data.success) {
                         setLikes(Likes - 1)
@@ -125,7 +147,7 @@ const LikeAndDislike = (props) => {
         }
 
         if (DislikeAction !== null) {
-            apiCall.post('/undisLike', variable)
+            apiCall.post(`/undisLike`, variable)
                 .then(response => {
                     if (response.data.success) {
 
@@ -137,7 +159,7 @@ const LikeAndDislike = (props) => {
                     }
                 })
         } else {
-            apiCall.post('/updisLike', variable)
+            apiCall.post(`/updisLike`, variable)
                 .then(response => {
                     if (response.data.success) {
                         setDislikes(Dislikes + 1)

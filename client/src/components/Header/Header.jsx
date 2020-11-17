@@ -6,12 +6,14 @@ import { userLogout } from '../../redux/user/user.action';
 
 import styles from './Header.module.css';
 import { FaYoutube } from 'react-icons/fa';
-import { BsUpload } from 'react-icons/bs';
+import { RiVideoAddFill } from 'react-icons/ri';
 import { BiMenuAltRight } from 'react-icons/bi';
 import cx from 'classnames';
+import UserAvatar from './../UserAvatar/UserAvatar';
 
 const Header = ({ currentUser, userLogout }) => {
 	const [ isMenuOpen, setIsMenuOpen ] = useState(false);
+	const [ isDrop, setIsDrop ] = useState(false);
 	const history = useHistory();
 
 	const logout = () => {
@@ -52,11 +54,17 @@ const Header = ({ currentUser, userLogout }) => {
 			) : (
 				<div className={styles.navLinks}>
 					<Link className={styles.link} to="/video/upload">
-						<BsUpload className={styles.uploadIcon} />
+						<RiVideoAddFill className={styles.uploadIcon} />
 					</Link>
-					<p className={styles.link} onClick={logout}>
-						Logout
-					</p>
+					<span className={styles.userInfo} onClick={() => setIsDrop(!isDrop)}>
+						<UserAvatar style={{ cursor:"pointer" }} user={currentUser} />
+						{isDrop && <div className={styles.dropdown}>
+							<Link className={styles.link} to="/user/dashboard">Dashboard</Link>
+							<p className={styles.link} onClick={logout}>
+								Logout
+							</p>
+						</div>}
+					</span>
 				</div>
 			)}
 			<div className={styles.menuContainer} onClick={handleOnMenuClose}>
@@ -81,6 +89,9 @@ const Header = ({ currentUser, userLogout }) => {
 						<div>
 							<Link className={styles.link} to="/video/upload">
 								Upload
+							</Link>
+							<Link className={styles.link} to="/user/dashboard">
+								Dashboard
 							</Link>
 							<p className={styles.link} onClick={logout}>
 								Logout

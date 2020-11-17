@@ -19,6 +19,11 @@ const Card = ({ item }) => {
         increseViewCount(item._id);
     }
 
+    const handleOnGoChannel = (event) => {
+        event.stopPropagation();
+        history.push(`/channel/${item.writer._id}`);
+    }
+
 	return (
         <div className="col-c4">
             <div className={styles.card} onClick={handleOnOpenVideo}>
@@ -32,7 +37,7 @@ const Card = ({ item }) => {
                     <UserAvatar user={item.writer} />
                     <span className={styles.details}>
                         <h5>{item.title}</h5>
-                        <p>{item.writer.displayName}</p>
+                        <p onClick={handleOnGoChannel}>{item.writer.displayName}</p>
                         <span>{item.views} {item.views > 1 ? "views" : "view"} <b>·</b> {moment(item.createdAt).format('MMM Do, YYYY')}</span>
                     </span>
                 </div>

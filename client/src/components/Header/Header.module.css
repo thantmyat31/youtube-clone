@@ -52,10 +52,42 @@
     transition: 0.4s;
 }
 
+.userInfo {
+    position: relative;
+    margin-left:20px;
+}
+
+.userInfo .dropdown {
+    position: absolute;
+    top: 70px;
+    right: 0;
+    background: #fff;
+    z-index: 9;
+}
+
+.userInfo .dropdown::before {
+    content: '';
+    border-width: 10px;
+    border-color: transparent transparent #fff transparent;
+    border-style: solid;
+    position: absolute;
+    top: -20px;
+    right: 10px;
+}
+
+.userInfo .dropdown .link {
+    margin-left:0;
+    border-bottom:1px solid #ddd;
+    padding:10px 20px;
+}
+
+.userInfo .dropdown .link:hover {
+    background:#ddd;
+}
+
 .uploadIcon {
-    stroke-width: 1px;
     font-size: 20px;
-    color:#606060;
+    color: #404040;
 }
 
 .navLinks .link:hover {
