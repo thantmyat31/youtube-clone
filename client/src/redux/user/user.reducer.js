@@ -12,7 +12,8 @@ const INITIAL_STATE = {
 
 const userReducer = (state = INITIAL_STATE, action) => {
     switch(action.type) {
-        case userActionTypes.SAVE_USER_IN_STATE:
+        case userActionTypes.USER_LOGIN_SUCCESS:
+            localStorage.setItem("auth-token", action.payload.token);
             return {
                 ...state,
                 currentUser: action.payload.user,
@@ -26,12 +27,23 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 token: undefined
             }
 
+        case userActionTypes.USER_LOGIN_START:
         case userActionTypes.CHANNEL_VISIT_START:
         case subscribeActionTypes.SUBSCRIBE_START:
         case subscribeActionTypes.UNSUBSCRIBE_START:
             return {
                 ...state,
                 loading: true,
+            }
+
+        case userActionTypes.USER_LOGIN_FAILURE:
+            localStorage.removeItem('auth-token');
+            return {
+                ...state,
+                loading: false,
+                token: undefined,
+                currentUser: undefined,
+                error: action.payload
             }
 
         case userActionTypes.CHANNEL_VISIT_FAILURE:

@@ -1,9 +1,6 @@
 import React, { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import { connect } from 'react-redux';
-import { saveUserInState } from './redux/user/user.action';
-
 import LandingPage from './pages/Landing/LandingPage';
 import LoginPage from './pages/Login/Login.page';
 import RegisterPage from './pages/Register/Register.page';
@@ -19,30 +16,30 @@ import axios from 'axios';
 import UserDashboard from './pages/UserDashboard/UserDashboard';
 import Channel from './pages/Channel/Channel';
 
-const App = ({ saveUserInState }) => {
+const App = () => {
 	useEffect(() => {
 		const checkLoggin = async () => {
 			try {
 				let token = await localStorage.getItem("auth-token");
-				if(!token) {
-					localStorage.setItem("auth-token", "");
-					token = "";
-				}
 
-				const response = await axios.post('http://localhost:2020/users/isTokenValid',null,{
-					headers : {
-						"x-auth-token": token
-					}
-				});
-
-				const isTokenValid = await response.data;
-				if(isTokenValid) {
-					const user = await axios.get('http://localhost:2020/users', {
-						headers: {
+				if(token) {
+					const response = await axios.post('http://localhost:2020/users/isTokenValid',null,{
+						headers : {
 							"x-auth-token": token
 						}
 					});
-					saveUserInState(token, user.data);
+
+					const isTokenValid = await response.data;
+					if(!isTokenValid) {
+						const user = await axios.get('http://localhost:2020/users', {
+							headers: {
+								"x-auth-token": token
+							}
+						});
+						// saveUserInState(token, user.data);
+					} else {
+						console.log('[Access token error]: token does not exist, authorization denied.');
+					}
 				}
 			} catch (error) {
 				console.log("[Access token error]:", error);
@@ -50,7 +47,7 @@ const App = ({ saveUserInState }) => {
 		}
 
 		checkLoggin();
-	}, [saveUserInState]);
+	}, []);
 
 	return (
 		<>
@@ -82,8 +79,4 @@ const App = ({ saveUserInState }) => {
 	);
 };
 
-const mapDispatchToProps = dispatch => ({
-	saveUserInState: (token, user) => dispatch(saveUserInState(token, user))
-})
-
-export default connect(null, mapDispatchToProps)(App);
+export default App;
