@@ -1,32 +1,53 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+
+import { newUserRegister, userLogin } from './../../api/api';
+import { connect } from 'react-redux';
+import { saveUserInState } from './../../redux/user/user.action';
 
 import Input from '../../components/Input/Input';
 import Button from './../../components/Button/Button';
 import styles from './Register.module.css';
 import ErrorNotice from '../../components/ErrorNotice/ErrorNotice';
-import { userRegisterAction } from '../../redux/user/user.action';
 
 
-const RegisterPage = () => {
+const RegisterPage = ({ saveUserInState }) => {
     const [ displayName, setDisplayName ] = useState();
     const [ email, setEmail ] = useState();
     const [ password, setPassword ] = useState();
     const [ confirmPassword, setConfirmPassword ] = useState();
     const [ error, setError ] = useState();
     const history = useHistory();
-    const dispatch = useDispatch();
 
     const handleOnSubmit = async (event) => {
         event.preventDefault();
-        const newUser = { displayName, email, password, confirmPassword };
+       
         try {
-            dispatch(userRegisterAction(newUser));
-        } catch(error) {
+            const newUser = { displayName, email, password, confirmPassword };
+            
+            // New user register
+            const registerResponse = await newUserRegister(newUser);
+            if(registerResponse) {
+                console.log(registerResponse)
+                throw new Error(registerResponse);
+            }
+            
+            // User login
+            const loginResponse = await userLogin(email, password);
+            
+            const { token, user } = loginResponse.data;
+            
+            // Save user in state
+            saveUserInState(token, user);
+
+            // Save token in localStorage
+            localStorage.setItem("auth-token", token);
+
+            history.push("/"); 
+
+        } catch (error) {
             setError(error.message);
         }
-        // history.push("/"); 
     }
 
 	return (
@@ -73,4 +94,8 @@ const RegisterPage = () => {
 	);
 };
 
-export default RegisterPage;
+const mapDispatchToProps = dispatch => ({
+    saveUserInState: (token, user) => dispatch(saveUserInState(token, user))
+})
+
+export default connect(null, mapDispatchToProps)(RegisterPage);

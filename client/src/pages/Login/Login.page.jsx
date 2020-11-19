@@ -1,28 +1,43 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import { userLogin } from './../../api/api';
+import { connect } from 'react-redux';
+import { saveUserInState } from './../../redux/user/user.action';
+
 import Input from '../../components/Input/Input';
 import Button from './../../components/Button/Button';
 import ErrorNotice from '../../components/ErrorNotice/ErrorNotice';
 import styles from './Login.module.css';
-import { useDispatch } from 'react-redux';
-import { userLoginAction } from '../../redux/user/user.action';
 
-const LoginPage = () => {
+const LoginPage = ({ saveUserInState }) => {
     const [ email, setEmail ] = useState();
 	const [ password, setPassword ] = useState();
 	const [ error, setError ] = useState();
 	const history = useHistory();
-	const dispatch = useDispatch();
 
     const handleOnSubmit = async (event) => {
         event.preventDefault();
+	
 		try {
-			dispatch(userLoginAction(email, password));
+			// User login
+			const loginResponse = await userLogin(email, password);
+			if(!loginResponse.data) {
+				throw new Error(loginResponse);
+			}
+			const { token, user } = loginResponse.data;
+			
+			// Save user in state
+			saveUserInState(token, user);
+
+			// Save token in localStorage
+			localStorage.setItem("auth-token", token);
+
+			// After logged in, go back to current page
+			history.goBack();			
 		} catch (error) {
 			setError(error.message);
 		}
-		history.goBack();
     }
 
 	return (
@@ -55,5 +70,8 @@ const LoginPage = () => {
 	);
 };
 
+const mapDispatchToProps = dispatch => ({
+    saveUserInState: (token, user) => dispatch(saveUserInState(token, user))
+})
 
-export default LoginPage;
+export default connect(null, mapDispatchToProps)(LoginPage);

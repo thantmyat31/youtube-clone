@@ -8,13 +8,13 @@ import Card from './../../components/Card/Card';
 import styles from './Subscription.module.css';
 
 const SubscriptionPage = () => {
-    const { videos, isLoading } = useSelector(state => state.video);
+    const { subscribedVideos: videos, isLoading } = useSelector(state => state.video);
     const { currentUser } = useSelector(state => state.user);
     const dispatch = useDispatch();
 
     useEffect(() => {
         const userFrom = currentUser && currentUser.id;
-        if(userFrom) dispatch(getSubscribedVideosAction(userFrom));
+        if(userFrom) dispatch(getSubscribedVideosAction(currentUser.id));
     }, [dispatch, currentUser]);
 
     const VideosRow = () => (
@@ -31,7 +31,7 @@ const SubscriptionPage = () => {
             <h1 className={styles.title}>Subscribed Video</h1>
             <WrapperComponent isLoading={isLoading} />
         </div>
-        );
+    );
     
 }
 

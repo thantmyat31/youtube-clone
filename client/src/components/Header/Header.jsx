@@ -18,7 +18,7 @@ const Header = ({ currentUser, userLogout }) => {
 
 	const logout = () => {
 		userLogout();
-		localStorage.setItem('auth-token', '');
+		localStorage.removeItem('auth-token');
 		history.push('/login');
 	};
 

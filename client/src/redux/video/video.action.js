@@ -21,6 +21,12 @@ export const fetchVideosFailure = (error) => ({
     payload: error
 });
 
+// Get subscribed videos
+export const getSubscribedVideosSuccess = (videos) => ({
+    type: videoActionTypes.GET_SUBSCRIBED_VIDEOS_SUCCESS,
+    payload: videos
+})
+
 // Get video by video id
 export const getVideoByIdStart = () => ({
     type: videoActionTypes.GET_VIDEO_BY_ID_SUCCCESS
@@ -33,6 +39,20 @@ export const getVideoByIdSuccess = (video) => ({
 
 export const getVideoByIdFailure = (error) => ({
     type: videoActionTypes.GET_VIDEO_BY_ID_FAILURE,
+    payload: error
+});
+
+export const getChannelVideoStart = () => ({
+    type: videoActionTypes.GET_CHANNEL_VIDEO_START
+});
+
+export const getChannelVideoSuccess = (videos) => ({
+    type: videoActionTypes.GET_CHANNEL_VIDEO_SUCCESS,
+    payload: videos
+});
+
+export const getChannelVideoFailure = (error) => ({
+    type: videoActionTypes.GET_CHANNEL_VIDEO_FAILURE,
     payload: error
 })
 
@@ -61,7 +81,7 @@ export const getSubscribedVideosAction = (userFrom) => {
             let response = await apiCall.post('/getSubscriptionVideos', { userFrom: userFrom });
             const result = await response.data;
             if(result) {
-                dispatch(fetchVideosSuccess(result.videos));
+                dispatch(getSubscribedVideosSuccess(result.videos));
             }
         } catch(error) {
             dispatch(fetchVideosFailure(error));
@@ -81,6 +101,22 @@ export const getVideoByIdAction = (videoId) => {
             }
         } catch (error) {
             dispatch(getVideoByIdFailure(error));
+        }
+    }
+}
+
+// Get channel videos 
+export const getChannelVideoAction = (channelId) => {
+    return async (dispatch) => {
+        dispatch(getChannelVideoStart());
+        try {
+            const response = await apiCall.post('/getChannelVideos', {channelId});
+            const result = await response.data;
+            if(result.success) {
+                dispatch(getChannelVideoSuccess(result.channelVideos));
+            }
+        } catch(error) {
+            dispatch(getChannelVideoFailure(error));
         }
     }
 }

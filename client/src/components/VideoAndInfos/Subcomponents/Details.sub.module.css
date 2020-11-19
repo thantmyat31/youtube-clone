@@ -35,6 +35,10 @@
     margin-left:15px;
 }
 
+.details .infoAndSub .writerInfo span h4 {
+    cursor: pointer;
+}
+
 .details .infoAndSub .writerInfo span p {
     font-size: 0.9rem;
     color:#555;

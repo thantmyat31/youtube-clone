@@ -25,7 +25,6 @@ router.post('/register', async (req, res) => {
 			});
 
         const existingUser = await User.findOne({ email: email });
-        console.log(existingUser);
 		if (existingUser)
 			return res.status(400).json({
 				message: 'An account with this email already exists.'
@@ -128,19 +127,5 @@ router.get('/', auth,  async (req, res) => {
         email: user.email
     });
 });
-
-router.post('/channel', (req, res) => {
-    User.findById(req.body.channelId)
-        .exec((error, channel) => {
-            if(error) return res.status(400).json({
-                success: false,
-                error
-            });
-            return res.status(200).json({
-                success: true,
-                channel
-            })
-        });
-})
 
 module.exports = router;

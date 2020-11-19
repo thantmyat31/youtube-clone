@@ -5,8 +5,9 @@ import styles from './Card.module.css';
 import moment from 'moment';
 import UserAvatar from '../UserAvatar/UserAvatar';
 import { increseViewCount } from './../../api/api';
+import cx from 'classnames';
 
-const Card = ({ item }) => {
+const Card = ({ item, inChannel }) => {
     const history = useHistory();
     
     let minute = Math.floor(item.duration / 60);
@@ -34,10 +35,10 @@ const Card = ({ item }) => {
                     </span>
                 </div>
                 <div className={styles.info}>
-                    <UserAvatar user={item.writer} />
-                    <span className={styles.details}>
+                    {!inChannel && <UserAvatar user={item.writer} />}
+                    <span className={inChannel ? cx(styles.details, styles.inChannel) : styles.details}>
                         <h5>{item.title}</h5>
-                        <p onClick={handleOnGoChannel}>{item.writer.displayName}</p>
+                        {!inChannel && <p onClick={handleOnGoChannel}>{item.writer.displayName}</p>}
                         <span>{item.views} {item.views > 1 ? "views" : "view"} <b>·</b> {moment(item.createdAt).format('MMM Do, YYYY')}</span>
                     </span>
                 </div>

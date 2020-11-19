@@ -17,6 +17,11 @@ const SideCard = ({ video }) => {
         increseViewCount(video._id);
     }
 
+    const handleOnGoChannel = (event) => {
+        event.stopPropagation();
+        history.push(`/channel/${video.writer._id}`);
+    }
+
     return ( 
         <div className={styles.card} onClick={handleOnOpenVideo}>
             <div className={styles.image}>
@@ -25,7 +30,7 @@ const SideCard = ({ video }) => {
             </div>
             <div className={styles.info}>
                 <h5>{video.title}</h5>
-                <p>{video.writer.displayName}</p>
+                <p onClick={handleOnGoChannel}>{video.writer.displayName}</p>
                 <span>
                     {video.views} {video.views > 1 ? 'views': 'view'} <b>·</b> {moment(video.createdAt).format('MMM Do, YYYY')}
                 </span>

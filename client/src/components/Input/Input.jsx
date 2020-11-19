@@ -1,11 +1,11 @@
 import React from 'react';
 import styles from './Input.module.css';
 
-const Input = ({ label, noLabel, name, type, value, autoComplete, onChange, required, placeholder, style, onFocus, onBlur }) => {
+const Input = ({ label, noLabel, name, type, value, autoComplete, onChange, required, placeholder, style, groupStyle, labelStyle, onFocus, onBlur, borderTransparent }) => {
 	return (
-		<div className={styles.inputGroup}>
+		<div className={styles.inputGroup} style={groupStyle}>
 			{!noLabel && (
-				<label htmlFor={name}>
+				<label htmlFor={name} style={labelStyle}>
 					{label ? label : name}
 					{required && <b> &#8727;</b>}
 				</label>
@@ -22,6 +22,7 @@ const Input = ({ label, noLabel, name, type, value, autoComplete, onChange, requ
                 onFocus={onFocus}
 				onBlur={onBlur}
 				value={value}
+				className={borderTransparent?styles.borderTransparent:null}
 			/>
 		</div>
 	);

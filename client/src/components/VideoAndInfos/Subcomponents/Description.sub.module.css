@@ -6,3 +6,12 @@
     color: #555;
     border-bottom: 1px solid #d6d6d6;
 }
+
+.container pre {
+    overflow-x: auto;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+}

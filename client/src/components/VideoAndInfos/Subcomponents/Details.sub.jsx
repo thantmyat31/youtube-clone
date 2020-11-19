@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import Button from '../../Button/Button';
@@ -9,6 +10,21 @@ import styles from './Details.sub.module.css';
 
 const Details = ({ video, subscribeNumber, subscribed, onClick }) => {
 	const { currentUser } = useSelector(state => state.user);
+	const [ isOwner, setIsOwner ] = useState(false);
+	const history = useHistory();
+
+	useEffect(() => {
+		if(currentUser) {
+			if(currentUser.id === video.writer._id) {
+				setIsOwner(true);
+			}
+		}
+	}, [currentUser, video, setIsOwner]);
+
+	const handleOnGoChannel = (event) => {
+        event.stopPropagation();
+        history.push(`/channel/${video.writer._id}`);
+    }
 
 	return (
 		<div className={styles.details}>
@@ -30,19 +46,19 @@ const Details = ({ video, subscribeNumber, subscribed, onClick }) => {
 				<div className={styles.writerInfo}>
 					<UserAvatar style={{ width: '50px', height: '50px' }} user={video.writer ? video.writer : null} />
 					<span>
-						<h4>{video.writer.displayName}</h4>
+						<h4 onClick={handleOnGoChannel}>{video.writer.displayName}</h4>
 						<p>
 							{subscribeNumber} {subscribeNumber > 0 ? `subscribers` : `subscriber`}
 						</p>
 					</span>
 				</div>
                 <div>
-                    <Button
+                   {!isOwner && <Button
                         type="button"
                         title={subscribed ? 'Subscribed' : 'Subscribe'}
                         subscribed={subscribed}
                         onClick={onClick}
-                    />
+                    />}
 				</div>
 			</div>
 		</div>

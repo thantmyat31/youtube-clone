@@ -149,4 +149,26 @@ router.post('/viewIncrease', (req, res) => {
         });
 });
 
+router.post('/getChannelVideos', (req, res) => {
+    Video.find()
+        .populate('writer')
+        .exec((error, videos) => {
+            if(error) return res.status(400).json({
+                success: false,
+                error
+            });
+
+            if(videos) {
+                let channelVideos = videos.filter(video => video.writer._id.toString() === req.body.channelId.toString());
+
+                console.log(channelVideos);
+               
+                return res.status(200).json({
+                    success: true,
+                    channelVideos
+                });
+            }
+        });
+});
+
 module.exports = router;

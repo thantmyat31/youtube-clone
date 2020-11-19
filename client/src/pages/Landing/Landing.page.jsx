@@ -1,17 +1,28 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { getVideosAction } from './../../redux/video/video.action';
 
 import Card from '../../components/Card/Card';
 import VideoHOC from './../../components/HOC/VideoHOC';
 
-import styles from './LandingPage.module.css';
+import styles from './Landing.module.css';
 
 
-const LandingPage = ({ videos, isLoading, getVideosAction }) => {
+const LandingPage = () => {
+    const { videos, isLoading } = useSelector(state => state.video);
+    const dispatch = useDispatch();
     useEffect(() => {
-        getVideosAction();
-    }, [getVideosAction]);
+        let isCleanUp = false;
+        if(!isCleanUp) {
+            if(!videos || videos.length === 0) {
+                dispatch(getVideosAction());
+            }
+        }
+
+        return () => {
+            isCleanUp = true;
+        }
+    }, [dispatch, videos]);
 
     const VideosRow = () => (
         <div className="row">
@@ -30,13 +41,5 @@ const LandingPage = ({ videos, isLoading, getVideosAction }) => {
      );
 }
 
-const mapStateToProps = state => ({
-    videos: state.video.videos,
-    isLoading: state.video.loading
-})
 
-const mapDispatchToProps = dispatch => ({
-    getVideosAction: () => dispatch(getVideosAction())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);
+export default LandingPage;

@@ -7,13 +7,11 @@ const INITIAL_STATE = {
     channelsId: [],
     error: null,
     loading: false,
-    channelVisitNow: undefined
 }
 
 const userReducer = (state = INITIAL_STATE, action) => {
     switch(action.type) {
-        case userActionTypes.USER_LOGIN_SUCCESS:
-            localStorage.setItem("auth-token", action.payload.token);
+        case userActionTypes.SAVE_USER_IN_STATE:
             return {
                 ...state,
                 currentUser: action.payload.user,
@@ -27,8 +25,6 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 token: undefined
             }
 
-        case userActionTypes.USER_LOGIN_START:
-        case userActionTypes.CHANNEL_VISIT_START:
         case subscribeActionTypes.SUBSCRIBE_START:
         case subscribeActionTypes.UNSUBSCRIBE_START:
             return {
@@ -36,17 +32,6 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 loading: true,
             }
 
-        case userActionTypes.USER_LOGIN_FAILURE:
-            localStorage.removeItem('auth-token');
-            return {
-                ...state,
-                loading: false,
-                token: undefined,
-                currentUser: undefined,
-                error: action.payload
-            }
-
-        case userActionTypes.CHANNEL_VISIT_FAILURE:
         case subscribeActionTypes.SUBSCRIBE_FAILURE:
         case subscribeActionTypes.UNSUBSCRIBE_FAILURE:
             return {
@@ -69,14 +54,6 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 loading: false,
                 error: null,
                 channelsId: state.channelsId.filter(cid => cid !== action.payload)
-            }
-
-        case userActionTypes.CHANNEL_VISIT_SUCCESS:
-            return {
-                ...state,
-                loading: false,
-                error: null,
-                channelVisitNow: action.payload
             }
 
         default:
