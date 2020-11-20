@@ -160,8 +160,6 @@ router.post('/getChannelVideos', (req, res) => {
 
             if(videos) {
                 let channelVideos = videos.filter(video => video.writer._id.toString() === req.body.channelId.toString());
-
-                console.log(channelVideos);
                
                 return res.status(200).json({
                     success: true,

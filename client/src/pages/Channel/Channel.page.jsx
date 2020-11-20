@@ -1,40 +1,44 @@
 import React, { useEffect, useState } from 'react';
+import { NavLink, Route, Switch, useRouteMatch } from 'react-router-dom';
+
 import { useSelector, useDispatch } from 'react-redux';
 import { getChannelVideoAction } from './../../redux/video/video.action';
+import { getsubscribeNumberAction, subscriptionAction, checkUserSubscribeAction, unsubscribeAction } from '../../redux/subscribe/subscribe.action';
 
 import UserAvatar from '../../components/UserAvatar/UserAvatar';
 import Button from './../../components/Button/Button';
 import Loading from '../../components/Loading/Loading';
-import Card from '../../components/Card/Card';
-
-import styles from './Channel.module.css';
-import { getsubscribeNumberAction, subscriptionAction } from '../../redux/subscribe/subscribe.action';
-import { checkUserSubscribeAction, unsubscribeAction } from './../../redux/subscribe/subscribe.action';
 import Input from './../../components/Input/Input';
+import ChannelVideos from './components/ChannelVideos/ChannelVideos';
+import ChannelAbout from './components/ChannelAbout/ChannelAbout';
+import AlertBox from '../../components/AlertBox/AlertBox';
 
 import { BsSearch } from 'react-icons/bs';
+import styles from './Channel.module.css';
 
-const ChannelPage = ({ match }) => {
+const ChannelPage = ({ match, history }) => {
     const channelId = match.params.channelId;
     const { channelVideos: videos } = useSelector(state => state.video);
     const { currentUser } = useSelector(state => state.user);
     const { subscribeNumber: number, isCurrentUserSubscribed: isSubscribed } = useSelector(state => state.subscribe);
     const [ channel, setChannel ] = useState();
+    const [ filtered, setFiltered ] = useState([]);
+    const [ keyword, setKeyword ] = useState('');
+    const [ showAlert, setShowAlert ] = useState(false);
     const dispatch = useDispatch();
+    const { url, path } = useRouteMatch();
 
+    // get channel writer
     useEffect(() => {
         if(videos.length !== 0) {
             setChannel(videos[0].writer);
         }
     }, [videos, setChannel]);
 
+    // get channel videos
     useEffect(() => {
-        if(videos.length !== 0) {
-            if(videos[0].writer._id !== channelId) {
-                dispatch(getChannelVideoAction(channelId));
-            }
-        }
-    },[dispatch, channelId, videos]);
+        dispatch(getChannelVideoAction(channelId));
+    },[dispatch, channelId]);
 
     // Get numbers of subscribed user
     useEffect(() => {
@@ -48,15 +52,24 @@ const ChannelPage = ({ match }) => {
 
     // Make subscription or unsubscription
     const subscription = () => {
+        if(!currentUser)  {
+            return setShowAlert(true);
+        }
         if(isSubscribed) dispatch(unsubscribeAction(channelId, currentUser.id));
         else dispatch(subscriptionAction(channelId, currentUser.id));
     }
-    
-    const cardRender = (videos) => {
-        return videos.map(video => <Card key={video._id} inChannel={true} item={video} />);
+
+    const handleOnSearch = (event) => {
+        const query = event.currentTarget.value.trim();
+        if(query !== '') {
+            setKeyword(query);
+        }
+        if(videos.length !== 0) {
+            setFiltered(videos.filter(v => v.title.toLowerCase().includes(query.toLowerCase())));
+        }
     }
 
-    if(!videos) return <Loading />;
+    if(!videos || videos.length === 0) return <Loading />;
 
     return ( 
         <div className={styles.container}>
@@ -80,8 +93,8 @@ const ChannelPage = ({ match }) => {
                 </div>
                 <div className={styles.topMenu}>
                     <span>
-                        <b className={styles.current}>Videos</b>
-                        <b>About</b>
+                        <NavLink exact to={url} activeClassName={styles.current} className={styles.link}>Videos</NavLink>
+                        <NavLink exact to={`${url}/about`} activeClassName={styles.current} className={styles.link}>About</NavLink>
                     </span>
                     <span className={styles.search}>
                         <Input label={<BsSearch />} type="text" name="search"
@@ -89,15 +102,26 @@ const ChannelPage = ({ match }) => {
                             labelStyle={input.labelStyle}
                             style={input.inputStyle}
                             borderTransparent={true}
+                            onChange={handleOnSearch}
                         />
                     </span>
                 </div>
             </div>
-            <div className={styles.videos}>
-                <div className="row">
-                    {cardRender(videos)}
-                </div>
-            </div>
+            <Switch>
+                <Route exact path={path}>
+                    <ChannelVideos videos={!keyword?videos:filtered} />
+                </Route>
+                <Route exact path={`${path}/about`}>
+                    <ChannelAbout />
+                </Route>
+            </Switch>
+
+            {showAlert && <AlertBox 
+                title="Want to subscribe to this channel?"
+                content="Sign in to subscribe to this channel."
+                onCancel={() => setShowAlert(false)}
+                onProceed={() => history.push('/login')}
+            />}
         </div>
      );
 }

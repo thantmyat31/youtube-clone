@@ -1,0 +1,5 @@
+.videos {
+    background:#f1f1f1;
+    padding:15px;
+    min-height:calc(100vh - 251px);
+}
