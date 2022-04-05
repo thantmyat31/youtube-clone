@@ -3,10 +3,13 @@
 ```bash
 npm install
 ```
+```bash
+cd client && npm install
+```
 
 ## Configuration
 
-Update your MongoDB connection url, jwt secret key and so on.
+Create .env file in root folder and update your MongoDB connection uri, jwt secret key and so on.
 
 ## Running frontend and backend separately
 
